@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public class CameraController : MonoBehaviour
+public class CameraController : NetworkBehaviour
 {
 
     private Transform CameraTransform;
@@ -19,6 +20,9 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
+		if (!isLocalPlayer)
+			return;
+		
         Vector3 direction = GetComponent<Transform>().forward;
         Vector3 up = GetComponent<Transform>().up;
         Camera.main.transform.position = GetComponent<Transform>().position - direction * 10 + up * 5;
