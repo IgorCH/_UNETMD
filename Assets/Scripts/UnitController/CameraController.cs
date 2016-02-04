@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.Networking;
 
 public class CameraController : NetworkBehaviour
