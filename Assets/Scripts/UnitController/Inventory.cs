@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using UnityEngine.Networking;
 
@@ -13,17 +14,23 @@ namespace MostDanger {
 	
 	public class Inventory: NetworkBehaviour {
 
-		public int CurrentWeaponIdx;
 		public Weapon CurrentWeapon;
-
-		public Weapon[] Weapons;
+		public WeaponStruct[] Weapons;
 
 		public Inventory () {
 			
 		}
 
-		public void SetCurrentWeapon () {
-			//Создает на персонаже Weapon Network Behaviour
+		public void CreateInventory(InventoryType type) {
+			
+			Debug.Log(type.ToString ());
+
+		}
+
+		public void SetCurrentWeapon (WeaponStruct weapon) {
+
+			CurrentWeapon = (Weapon)gameObject.AddComponent(Type.GetType(weapon.ScriptName));
+		
 		}
 
 	}

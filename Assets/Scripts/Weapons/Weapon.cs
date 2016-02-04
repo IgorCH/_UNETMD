@@ -8,7 +8,6 @@ namespace MostDanger {
 
 		public Vector3 CameraParams;
 
-
 		public virtual void OnAttackDown () {
 			
 		}

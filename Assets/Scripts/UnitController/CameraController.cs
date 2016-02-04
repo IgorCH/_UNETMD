@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using UnityEngine.Networking;
 
@@ -10,7 +11,7 @@ public class CameraController : NetworkBehaviour
 
 	void Start ()
     {
-	
+		
 	}
 	
 	void Update ()
