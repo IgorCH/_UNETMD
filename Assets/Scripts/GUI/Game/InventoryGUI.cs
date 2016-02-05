@@ -28,7 +28,8 @@ namespace MostDanger {
 			Instance = this;
 			IsOpened = false;
 			rootTransform = GetComponent<RectTransform> ();
-			rootTransform.localPosition = new Vector3 (ClosedXPos, 0, 0);
+			//rootTransform.localPosition = new Vector3 (ClosedXPos, 0, 0);
+            gameObject.SetActive(IsOpened);
 		}
 
 		void Start () {
@@ -41,31 +42,35 @@ namespace MostDanger {
 
 		public void Open (List<WeaponStruct> weapons, Action<WeaponStruct> callback) {
 
-			Callback = callback;
+            Callback = callback; 
+            
+            foreach (Transform child in itemsRoot)
+            {
+                 Destroy(child.gameObject);
+            }
 
-			foreach(var item in weapons) {
+			foreach(var weapon in weapons) {
 				var newInventoryItem = Instantiate (InventoryItemPrefab);
-				newInventoryItem.name = "item" + UnityEngine.Random.Range (0, 100);
+                newInventoryItem.name = weapon.Name;
 				newInventoryItem.GetComponent<RectTransform> ().parent = itemsRoot;
-				newInventoryItem.GetComponent<Button>().onClick.AddListener(() => OnInventoryItemClick(newInventoryItem));
+			    newInventoryItem.GetComponent<Image>().sprite = Resources.Load<Sprite>(weapon.Name);
+                newInventoryItem.GetComponent<Button>().onClick.AddListener(() => OnInventoryItemClick(weapon));
 			}
 
 			IsOpened = true;
-			rootTransform.localPosition = new Vector3 (OpenXPos, 0, 0);
+            gameObject.SetActive(IsOpened);
+			//rootTransform.localPosition = new Vector3 (OpenXPos, 0, 0);
 
 		}
 
 		public void Close () {
-
 			IsOpened = false;
-			rootTransform.localPosition = new Vector3 (ClosedXPos, 0, 0);
-
+			//rootTransform.localPosition = new Vector3 (ClosedXPos, 0, 0);
+            gameObject.SetActive(IsOpened);
 		}
 
-		private void OnInventoryItemClick (GameObject item) {
-			Debug.Log (item.name);
-
-			Callback (new WeaponStruct(){});
+		private void OnInventoryItemClick (WeaponStruct item) {
+			//Callback (new WeaponStruct(){});
 		}
 	}
 
