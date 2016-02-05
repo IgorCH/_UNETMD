@@ -43,8 +43,7 @@ namespace MostDanger {
 
 			Callback = callback;
 
-			//foreach(var item in inventory.Weapons) {
-			for(int i=0; i < 10; i++) {
+			foreach(var item in weapons) {
 				var newInventoryItem = Instantiate (InventoryItemPrefab);
 				newInventoryItem.name = "item" + UnityEngine.Random.Range (0, 100);
 				newInventoryItem.GetComponent<RectTransform> ().parent = itemsRoot;

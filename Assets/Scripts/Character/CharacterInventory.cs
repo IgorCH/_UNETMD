@@ -6,8 +6,6 @@ using System.Collections.Generic;
 
 namespace MostDanger {
 
-	[RequireComponent(typeof(Fist))]
-	[RequireComponent(typeof(Bazooka))]
 	public class CharacterInventory : NetworkBehaviour
 	{
 		public int m_PlayerNumber = 1;
@@ -29,10 +27,9 @@ namespace MostDanger {
 				Name = "Bazooka",
 				ScriptName = "Bazooka",
 				Count = 100
-			});
+			});	
 
-
-			CurrentWeapon = (Weapon)gameObject.GetComponent(Type.GetType("Bazooka"));	    
+			CurrentWeapon = (Weapon)gameObject.GetComponent("MostDanger.Bazooka");
 		}
 			
 	    private void Start()
@@ -72,7 +69,7 @@ namespace MostDanger {
 			{
 				Destroy (CurrentWeapon);
 			}
-			CurrentWeapon = (Weapon)gameObject.GetComponent(Type.GetType(weapon.ScriptName));
+			CurrentWeapon = (Weapon)gameObject.GetComponent("MostDanger." + Type.GetType(weapon.ScriptName));
 		}
 
 		public void SetDefaults()

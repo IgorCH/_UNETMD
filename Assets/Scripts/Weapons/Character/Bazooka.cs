@@ -33,8 +33,6 @@ namespace MostDanger {
 		private void Awake()
 		{
 			m_Rigidbody = GetComponent<Rigidbody> ();
-
-			//TODO CreateWeapons
 		}
 
 		private void Start()
@@ -52,19 +50,19 @@ namespace MostDanger {
 				m_CurrentLaunchForce = m_MaxLaunchForce;
 				Fire();
 			}
-			else if (Input.GetKeyDown(KeyCode.E))
+			else if (Input.GetKeyDown(KeyCode.R))
 			{
 				m_Fired = false;
 				m_CurrentLaunchForce = m_MinLaunchForce;
 				m_ShootingAudio.clip = m_ChargingClip;
 				m_ShootingAudio.Play();
 			}
-			else if (Input.GetKey(KeyCode.E) && !m_Fired)
+			else if (Input.GetKey(KeyCode.R) && !m_Fired)
 			{
 				m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
 				m_AimSlider.value = m_CurrentLaunchForce;
 			}
-			else if (Input.GetKeyUp(KeyCode.E) && !m_Fired)
+			else if (Input.GetKeyUp(KeyCode.R) && !m_Fired)
 			{
 				m_Fired = true;
 				Fire();
