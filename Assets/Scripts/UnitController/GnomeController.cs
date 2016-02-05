@@ -3,7 +3,6 @@ using System.Collections;
 
 namespace MostDanger {
 	
-	[RequireComponent(typeof(Inventory))]	
 	public class GnomeController : MonoBehaviour {
 
 		//protected Inventory unitInventory;

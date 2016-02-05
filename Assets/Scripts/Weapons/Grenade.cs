@@ -3,17 +3,9 @@ using System.Collections;
 
 namespace MostDanger {
 	
-	public class Bazooka : Weapon {
+	public class Grenade : Weapon {
 
-		public override void OnAttackDown () {
-
-		}
-
-		public override void OnAttackProcess () {
-
-		}
-
-		public override void OnAttackUp () {
+		public override void ManualUpdate () {
 
 		}
 

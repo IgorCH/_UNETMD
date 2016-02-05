@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace MostDanger {
 		
-	public class TankController : UnitController {
+	public class TankController : MonoBehaviour {
 
 		// Use this for initialization
 		void Start () {

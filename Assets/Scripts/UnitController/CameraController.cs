@@ -7,26 +7,21 @@ public class CameraController : NetworkBehaviour
 {
 
     private Transform CameraTransform;
-
+	private Transform CharacterTransform;
 
 	void Start ()
     {
-		
-	}
-	
-	void Update ()
-    {
-	
+		CameraTransform = Camera.main.GetComponent<Transform> ();
+		CharacterTransform = GetComponent<Transform> ();
 	}
 
     void LateUpdate()
     {
 		if (!isLocalPlayer)
 			return;
-		
-        Vector3 direction = GetComponent<Transform>().forward;
-        Vector3 up = GetComponent<Transform>().up;
-        Camera.main.transform.position = GetComponent<Transform>().position - direction * 10 + up * 5;
-        Camera.main.transform.rotation = GetComponent<Transform>().rotation;
+
+		CameraTransform.position = CharacterTransform.position - CharacterTransform.forward * 10 + CharacterTransform.up * 5;
+		CameraTransform.rotation = CharacterTransform.rotation;
     }
+
 }

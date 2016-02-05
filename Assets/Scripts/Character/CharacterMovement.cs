@@ -46,6 +46,7 @@ namespace MostDanger {
 
 	    private void Update()
 	    {
+			
 			if (!isLocalPlayer && Application.loadedLevelName != "AnimationTest")
 	            return;
 
