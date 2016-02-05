@@ -24,15 +24,15 @@ namespace MostDanger {
 	    public int m_Wins;                        // The number of wins this player has so far.
 	    
 		[HideInInspector]
-	    public string m_PlayerName;                    // The player name set in the lobby
+	    public string m_PlayerName;               // The player name set in the lobby
 
 		[HideInInspector]
 		public int m_PlayerNumber;                // This specifies which player this the manager for.
 
 	    [HideInInspector]
-	    public int m_LocalPlayerID;                    // The player localID (if there is more than 1 player on the same machine)
+	    public int m_LocalPlayerID;               // The player localID (if there is more than 1 player on the same machine)
 
-		public CharacterMovement m_Movement;        // References to various objects for control during the different game phases.
+		public CharacterMovement m_Movement;      // References to various objects for control during the different game phases.
 		public CharacterInventory m_Inventory;
 		public CharacterHealth m_Health;
 		public CharacterSetup m_Setup;
@@ -53,19 +53,14 @@ namespace MostDanger {
 
 	        // Set the player numbers to be consistent across the scripts.
 	        m_Movement.m_PlayerNumber = m_PlayerNumber;
-	        m_Movement.m_LocalID = m_LocalPlayerID;
-
 			m_Inventory.m_PlayerNumber = m_PlayerNumber;
-			m_Inventory.m_localID = m_LocalPlayerID;
 
 	        //setup is use for diverse Network Related sync
 	        m_Setup.m_Color = m_PlayerColor;
 	        m_Setup.m_PlayerName = m_PlayerName;
 
 	        m_Setup.m_PlayerNumber = m_PlayerNumber;
-	        m_Setup.m_LocalID = m_LocalPlayerID;
 	    }
-
 
 	    // Used during the phases of the game where the player shouldn't be able to control their tank.
 	    public void DisableControl()
@@ -73,7 +68,6 @@ namespace MostDanger {
 	        m_Movement.enabled = false;
 			m_Inventory.enabled = false;
 	    }
-
 
 	    // Used during the phases of the game where the player should be able to control their tank.
 	    public void EnableControl()

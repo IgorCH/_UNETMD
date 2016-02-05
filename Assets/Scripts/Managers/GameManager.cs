@@ -62,14 +62,13 @@ namespace MostDanger {
 	    /// <param name="c">The color of the player, choosen in the lobby</param>
 	    /// <param name="name">The name of the Player, choosen in the lobby</param>
 	    /// <param name="localID">The localID. e.g. if 2 player are on the same machine this will be 1 & 2</param>
-	    static public void AddTank(GameObject tank, int playerNum, Color c, string name, int localID)
+	    static public void AddTank(GameObject tank, int playerNum, Color c, string name)
 	    {
 			CharacterManager tmp = new CharacterManager();
 	        tmp.m_Instance = tank;
 	        tmp.m_PlayerNumber = playerNum;
 	        tmp.m_PlayerColor = c;
 	        tmp.m_PlayerName = name;
-	        tmp.m_LocalPlayerID = localID;
 	        tmp.Setup();
 
 	        m_Tanks.Add(tmp);

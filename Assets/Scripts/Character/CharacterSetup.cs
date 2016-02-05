@@ -23,10 +23,6 @@ namespace MostDanger {
 	    [SyncVar]
 	    public int m_PlayerNumber;
 
-	    //This is the local ID when more than 1 player per client
-	    [SyncVar]
-	    public int m_LocalID;
-
 	    [SyncVar]
 	    public bool m_IsReady = false;
 
@@ -38,7 +34,7 @@ namespace MostDanger {
 	        base.OnStartClient();
 
 	        if (!isServer) //if not hosting, we had the tank to the gamemanger for easy access!
-	            GameManager.AddTank(gameObject, m_PlayerNumber, m_Color, m_PlayerName, m_LocalID);
+	            GameManager.AddTank(gameObject, m_PlayerNumber, m_Color, m_PlayerName);
 
 	        GameObject m_TankRenderers = transform.Find("TankRenderers").gameObject;
 
@@ -67,13 +63,13 @@ namespace MostDanger {
 	            return;
 	        }
 
-	        if (GameManager.s_Instance.m_GameIsFinished && !m_IsReady)
+	        /*if (GameManager.s_Instance.m_GameIsFinished && !m_IsReady)
 	        {
 	            if(Input.GetButtonDown("Fire"+(m_LocalID + 1)))
 	            {
 	                CmdSetReady();
 	            }
-	        }
+	        }*/
 	    }
 
 	    public void SetLeader(bool leader)

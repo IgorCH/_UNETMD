@@ -6,7 +6,6 @@ namespace MostDanger {
 	public class CharacterMovement : NetworkBehaviour
 	{
 	    public int m_PlayerNumber = 1;                // Used to identify which tank belongs to which player.  This is set by this tank's manager.
-	    public int m_LocalID = 1;
 	    public float m_Speed = 12f;                   // How fast the tank moves forward and back.
 	    public float m_TurnSpeed = 180f;              // How fast the tank turns in degrees per second.
 	    public float m_PitchRange = 0.2f;             // The amount by which the pitch of the engine noises can vary.
@@ -37,8 +36,8 @@ namespace MostDanger {
 	    private void Start()
 	    {
 	        // The axes are based on player number.
-	        m_MovementAxis = "Vertical" + (m_LocalID + 1);
-	        m_TurnAxis = "Horizontal" + (m_LocalID + 1);
+	        m_MovementAxis = "Vertical1";
+	        m_TurnAxis = "Horizontal1";
 
 	        // Store the original pitch of the audio source.
 	        m_OriginalPitch = m_MovementAudio.pitch;
