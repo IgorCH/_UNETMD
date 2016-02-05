@@ -10,7 +10,6 @@ namespace MostDanger {
         public string ScriptName { get; set; }
         public int Count { get; set; }
 
-
 	}
 
 }
