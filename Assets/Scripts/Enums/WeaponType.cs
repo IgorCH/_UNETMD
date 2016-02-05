@@ -6,31 +6,47 @@
 		Fist,
 		Pistol,
 		Shotgun,
+
 		Rifle,
 		SniperRifle,
+
 		Bazooka,
 		Mortar,
 		HomingMissile,
-		Grenade,
-		CassetGrenade,
-		FireCassetGrenade,
-		AcidGrenade,
 
-		HealthGrenade,
+		Grenade,
+		ClusterBomb,
+		FireClusterBomb,
+		SmokeBomb,
+		AcidBomb,
+
+		Mines,
+		RemoteMines,
+		Dynamite,
+		SuperDynamite,
+
+		HealthBomb,
 		HealthBullet,
 
+		NightVisionSight,
+		TemperatureVisionSight,
+		Binoculars,
 		Jetpack,
 		Paraсhute,
 
+		Camouflage,
+
+		AirStrike,
 
 		//Airplane
 		AirplaneMachineGun,
 		AirplaneBombs,
-
+		AirplaneCatapult,
 
 		//Helicopter
 		HelicopterMachineGun,
 		HelicopterBombs,
+		HelicopterCatapult,
 
 		//Tank
 		TankMachineGun,
@@ -46,7 +62,13 @@
 		//Car
 
 
+
 		//Нужна инженерная техника
+		//строительство мостов
+		//бочки с топливом
+		//ящики с оружием и снарядами
+
+		//продумать ветер осадки смену дня/ночи
 
 	}
 
