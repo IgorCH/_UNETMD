@@ -29,7 +29,7 @@ namespace MostDanger {
 				Count = 100
 			});	
 
-			CurrentWeapon = (Weapon)gameObject.GetComponent("MostDanger.Bazooka");
+			CurrentWeapon = (Weapon)gameObject.GetComponent("MostDanger.Fist");
 		}
 			
 	    private void Start()
@@ -70,6 +70,7 @@ namespace MostDanger {
 				Destroy (CurrentWeapon);
 			}
 			CurrentWeapon = (Weapon)gameObject.GetComponent("MostDanger." + Type.GetType(weapon.ScriptName));
+            Debug.Log(CurrentWeapon);
 		}
 
 		public void SetDefaults()

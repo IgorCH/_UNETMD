@@ -10,7 +10,7 @@ namespace MostDanger
     {
 
 
-        public Rigidbody m_Shell;                 // Prefab of the shell.
+        public Rigidbody Shell;                 // Prefab of the shell.
         public Transform m_FireTransform;         // A child of the tank where the shells are spawned.
 
         public Slider m_AimSlider;                // A child of the tank that displays the current launch force.
@@ -84,7 +84,7 @@ namespace MostDanger
         [Command]
         private void CmdFire(Vector3 rigidbodyVelocity, float launchForce, Vector3 forward, Vector3 position, Quaternion rotation)
         {
-            Rigidbody shellInstance = Instantiate(m_Shell, position, rotation) as Rigidbody;
+            Rigidbody shellInstance = Instantiate(Shell, position, rotation) as Rigidbody;
             Vector3 velocity = rigidbodyVelocity + launchForce * forward;
             shellInstance.velocity = velocity;
             NetworkServer.Spawn(shellInstance.gameObject);

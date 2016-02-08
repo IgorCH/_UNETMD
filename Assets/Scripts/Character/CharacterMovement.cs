@@ -8,7 +8,7 @@ namespace MostDanger {
 	    public int m_PlayerNumber = 1;                // Used to identify which tank belongs to which player.  This is set by this tank's manager.
 	    
 		public float m_Speed = 12f;                   // How fast the tank moves forward and back.
-	    public float m_TurnSpeed = 180f;              // How fast the tank turns in degrees per second.
+	    public float m_TurnSpeed = 18f;              // How fast the tank turns in degrees per second.
 	    public float m_PitchRange = 0.2f;             // The amount by which the pitch of the engine noises can vary.
 	    
 		public AudioSource m_MovementAudio;           // Reference to the audio source used to play engine sounds. NB: different to the shooting audio source.
@@ -19,19 +19,15 @@ namespace MostDanger {
 	    public Rigidbody m_Rigidbody;              // Reference used to move the tank.
 
 	    private float m_MovementInput;              // The current value of the movement input.
-	    private float m_TurnInput;                  // The current value of the turn input.
+	    private float oldX;
 	    private float m_OriginalPitch;              // The pitch of the audio source at the start of the scene.
 
-
 	    public Animator Animator;
-
-
 
 	    private void Awake()
 	    {
 	        m_Rigidbody = GetComponent<Rigidbody>();
 	    }
-
 
 	    private void Start()
 	    {
@@ -47,16 +43,14 @@ namespace MostDanger {
 
 	        // Store the value of both input axes.
 			m_MovementInput = Input.GetAxis("Vertical1");
-			m_TurnInput = Input.GetAxis("Horizontal1");
 
 	        EngineAudio();
 	    }
 
-
 	    private void EngineAudio()
 	    {
 	        // If there is no input (the tank is stationary)...
-	        if (Mathf.Abs(m_MovementInput) < 0.1f && Mathf.Abs(m_TurnInput) < 0.1f)
+            if (Mathf.Abs(m_MovementInput) < 0.1f && Mathf.Abs(Input.mousePosition.x - oldX) < 0.1f)
 	        {
 	            // ... and if the audio source is currently playing the driving clip...
 	            if (m_MovementAudio.clip == m_EngineDriving)
@@ -80,17 +74,15 @@ namespace MostDanger {
 	        }
 	    }
 
-
 	    private void FixedUpdate()
 	    {
-			if (!isLocalPlayer && Application.loadedLevelName != "AnimationTest")
+			if (!isLocalPlayer)
 	            return;
 
 	        // Adjust the rigidbodies position and orientation in FixedUpdate.
 	        Move();
 	        Turn();
 	    }
-
 
 	    private void Move()
 	    {
@@ -103,19 +95,18 @@ namespace MostDanger {
 	        m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
 	    }
 
-
 	    private void Turn()
 	    {
 	        // Determine the number of degrees to be turned based on the input, speed and time between frames.
-	        float turn = m_TurnInput * m_TurnSpeed * Time.deltaTime;
+            float turn = (Input.mousePosition.x - oldX) * m_TurnSpeed * Time.deltaTime;
+	        oldX = Input.mousePosition.x;
 
 	        // Make this into a rotation in the y axis.
-	        Quaternion inputRotation = Quaternion.Euler(0f, turn, 0f);
+	        Quaternion inputRotation = Quaternion.Euler(0f, turn / 10, 0f);
 
 	        // Apply this rotation to the rigidbody's rotation.
 	        m_Rigidbody.MoveRotation(m_Rigidbody.rotation * inputRotation);
 	    }
-
 
 	    // This function is called at the start of each round to make sure each tank is set up correctly.
 	    public void SetDefaults()
@@ -124,9 +115,8 @@ namespace MostDanger {
 	        m_Rigidbody.angularVelocity = Vector3.zero;
 
 	        m_MovementInput = 0f;
-	        m_TurnInput = 0f;
 
-	        m_LeftDustTrail.Clear();
+            m_LeftDustTrail.Clear();
 	        m_LeftDustTrail.Stop();
 
 	        m_RightDustTrail.Clear();

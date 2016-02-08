@@ -1,0 +1,11 @@
+# File created by luuv TSX
+# Created on: Wed Mar 03 11:34:15 2010 -1
+
+newmtl airplane
+Ns 0
+Ka 0.200000 0.200000 0.200000
+Kd 1.000000 1.000000 1.000000
+Ks 0.100000 0.100000 0.100000
+d 0.996078
+map_Kd airplane_linnen_tex.bmp 
+# End

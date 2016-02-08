@@ -7,8 +7,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace MostDanger {
-
-	//delegate bool InventoryCallback(int hWnd, int lParam);
 		
 	public class InventoryGUI : MonoBehaviour {
 
@@ -24,23 +22,17 @@ namespace MostDanger {
 
 		private Action<WeaponStruct> Callback;
 
-		void Awake () {
+		void Awake ()
+        {
 			Instance = this;
 			IsOpened = false;
-			rootTransform = GetComponent<RectTransform> ();
+			//rootTransform = GetComponent<RectTransform> ();
 			//rootTransform.localPosition = new Vector3 (ClosedXPos, 0, 0);
             gameObject.SetActive(IsOpened);
 		}
 
-		void Start () {
-		
-		}
-
-		void Update () {
-
-		}
-
-		public void Open (List<WeaponStruct> weapons, Action<WeaponStruct> callback) {
+		public void Open (List<WeaponStruct> weapons, Action<WeaponStruct> callback)
+        {
 
             Callback = callback; 
             
@@ -49,12 +41,14 @@ namespace MostDanger {
                  Destroy(child.gameObject);
             }
 
-			foreach(var weapon in weapons) {
+			foreach(var weapon in weapons)
+            {
 				var newInventoryItem = Instantiate (InventoryItemPrefab);
                 newInventoryItem.name = weapon.Name;
-				newInventoryItem.GetComponent<RectTransform> ().parent = itemsRoot;
+				newInventoryItem.GetComponent<RectTransform> ().SetParent(itemsRoot);
 			    newInventoryItem.GetComponent<Image>().sprite = Resources.Load<Sprite>(weapon.Name);
-                newInventoryItem.GetComponent<Button>().onClick.AddListener(() => OnInventoryItemClick(weapon));
+			    WeaponStruct localWeapon = weapon;
+                newInventoryItem.GetComponent<Button>().onClick.AddListener(() => OnInventoryItemClick(localWeapon));
 			}
 
 			IsOpened = true;
@@ -63,14 +57,17 @@ namespace MostDanger {
 
 		}
 
-		public void Close () {
+		public void Close ()
+        {
 			IsOpened = false;
 			//rootTransform.localPosition = new Vector3 (ClosedXPos, 0, 0);
             gameObject.SetActive(IsOpened);
 		}
 
-		private void OnInventoryItemClick (WeaponStruct item) {
-			//Callback (new WeaponStruct(){});
+		private void OnInventoryItemClick (WeaponStruct item)
+		{
+		    Close();
+			Callback (item);
 		}
 	}
 
