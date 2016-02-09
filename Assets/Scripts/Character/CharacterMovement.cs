@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 
 namespace MostDanger {
@@ -37,8 +38,8 @@ namespace MostDanger {
 
 	    private void Update()
 	    {
-			
-			if (!isLocalPlayer && Application.loadedLevelName != "AnimationTest")
+
+            if (!isLocalPlayer && SceneManager.GetActiveScene().name != "AnimationTest")
 	            return;
 
 	        // Store the value of both input axes.

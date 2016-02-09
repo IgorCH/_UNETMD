@@ -17,11 +17,16 @@ public class CameraController : NetworkBehaviour
 
     void LateUpdate()
     {
-		if (!isLocalPlayer)
-			return;
+        Debug.Log(gameObject.name + " - " + isLocalPlayer + " - " + hasAuthority);
 
-		CameraTransform.position = CharacterTransform.position - CharacterTransform.forward * 10 + CharacterTransform.up * 5;
-		CameraTransform.rotation = CharacterTransform.rotation;
+
+
+        if (isLocalPlayer || hasAuthority)
+        {
+            CameraTransform.position = CharacterTransform.position - CharacterTransform.forward*10 +
+                                       CharacterTransform.up*5;
+            CameraTransform.rotation = CharacterTransform.rotation;
+        }
     }
 
 }

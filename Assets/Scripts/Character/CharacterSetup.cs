@@ -52,6 +52,7 @@ namespace MostDanger {
 	            m_TankRenderers.SetActive(false);
 
 	        m_NameText.text = "<color=#" + ColorUtility.ToHtmlStringRGB(m_Color) + ">"+m_PlayerName+"</color>";
+            gameObject.name = m_NameText.text;
 	        m_Crown.SetActive(false);
 	    }
 

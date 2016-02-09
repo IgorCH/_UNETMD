@@ -46,7 +46,8 @@ public class AirplaneController : NetworkBehaviour
     }
 
 
-	void Start () {
+	void Start ()
+    {
 	
 	}
 	

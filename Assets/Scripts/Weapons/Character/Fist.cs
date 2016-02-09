@@ -21,7 +21,7 @@ namespace MostDanger {
         public override void ManualUpdate()
         {
 
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 CreateAirplane();
             }
@@ -39,6 +39,7 @@ namespace MostDanger {
         private void CmdCreateAirplane(Vector3 pos)
         {
             var airplaneInstance = Instantiate(AirplanePrefab, pos, Quaternion.identity) as GameObject;
+            airplaneInstance.name = airplaneInstance.name + "_" + gameObject.name;
             NetworkServer.SpawnWithClientAuthority(airplaneInstance, connectionToClient);
             gameObject.SetActive(false);
         }
