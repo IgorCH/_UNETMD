@@ -22,7 +22,6 @@ namespace MostDanger {
 
 		private Rigidbody m_Rigidbody;          // Reference to the rigidbody component.
 	
-
 		[SyncVar]
 		private float m_CurrentLaunchForce;     // The force that will be given to the shell when the fire button is released.
 

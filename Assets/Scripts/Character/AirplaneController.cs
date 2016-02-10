@@ -37,12 +37,22 @@ public class AirplaneController : NetworkBehaviour
     public GameObject FrontUpTriggerObject;
     public GameObject RearTriggerObject;
 
+	public Transform LeftMachineGun;
+	public Transform RightMachineGun;
+	public GameObject AirplaneMachineGunBullet;
+
+	private Rigidbody rigidbody;
+	private Transform transform;
+
     void Awake()
     {
         _groundTrigger = GroundTriggerObject.GetComponent<GroundTrigger>();
         _frontTrigger = FrontTriggerObject.GetComponent<FrontTrigger>();
         _frontUpTrigger = FrontUpTriggerObject.GetComponent<FrontUpTrigger>();
         _rearTrigger = RearTriggerObject.GetComponent<RearTrigger>();
+
+		rigidbody = GetComponent<Rigidbody> ();
+		transform = GetComponent<Transform> ();
     }
 
 
@@ -129,7 +139,27 @@ public class AirplaneController : NetworkBehaviour
             if (_frontUpTrigger.IsTriggered) transform.Rotate(Time.deltaTime * -20, 0, 0);
             if (!_groundTrigger.IsTriggered) transform.Translate(0, PseudoGravitation * Time.deltaTime / 10.0F, 0);
         }
+
+		if (Input.GetMouseButtonDown (0))
+		{
+			Fire ();		
+		}
     }
+
+	private void Fire()
+	{
+
+		CmdFire(rigidbody.velocity, 300f, transform.forward, transform.position + transform.forward * 5, transform.rotation);
+
+	}
+
+	[Command]
+	private void CmdFire(Vector3 rigidbodyVelocity, float launchForce, Vector3 forward, Vector3 position, Quaternion rotation)
+	{
+		GameObject newAirplaneMachineGunBullet = Instantiate(AirplaneMachineGunBullet, position, rotation) as GameObject;
+		newAirplaneMachineGunBullet.GetComponent<Rigidbody>().velocity = rigidbodyVelocity + launchForce * forward;
+		NetworkServer.Spawn(newAirplaneMachineGunBullet);
+	}
 
     void OnCollisionEnter(Collision collision)
     {
@@ -138,7 +168,7 @@ public class AirplaneController : NetworkBehaviour
             _isCrashed = true;
             _groundTrigger.IsTriggered = true;
             _speed = 0;
-            GetComponent<Rigidbody>().useGravity = true;
+			rigidbody.useGravity = true;
         }
     }
 

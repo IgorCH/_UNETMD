@@ -2,7 +2,8 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
 
-namespace MostDanger {
+namespace MostDanger
+{
 		
 	public class CharacterLobbyHook : UnityStandardAssets.Network.LobbyHook 
 	{
