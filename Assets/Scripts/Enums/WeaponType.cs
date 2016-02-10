@@ -1,4 +1,36 @@
-﻿namespace MostDanger {
+﻿/*
+	WASD - Normal Movement
+	Crunch + Alt
+	Run + Shift
+	
+	Tab - Inventory
+	E - Use
+	Q - Exit
+
+	LMB - Shoot
+	RMB - Targeting
+
+	CurentWeapon
+
+	Spec Slot + GUI
+	Parachute
+	Vision
+
+
+
+	GUI
+	CharacterIcon + Enginery
+	Map + ExtendedVersion
+	Inventory
+	CurrentWeapon + TargetingGUI
+	SpecSlots
+	Time
+	Team Score + Extended Version)
+	
+
+*/
+
+namespace MostDanger {
 	
 	public enum WeaponType {
 

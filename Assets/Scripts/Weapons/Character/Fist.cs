@@ -38,9 +38,12 @@ namespace MostDanger {
         [Command]
         private void CmdCreateAirplane(Vector3 pos)
         {
-            var airplaneInstance = Instantiate(AirplanePrefab, pos, Quaternion.identity) as GameObject;
+			var airplaneInstance = Instantiate(AirplanePrefab, pos, Quaternion.identity) as GameObject;
             airplaneInstance.name = airplaneInstance.name + "_" + gameObject.name;
-            NetworkServer.SpawnWithClientAuthority(airplaneInstance, connectionToClient);
+            
+			//NetworkServer.Spawn(airplaneInstance);
+
+			NetworkServer.SpawnWithClientAuthority(airplaneInstance, connectionToClient);
             gameObject.SetActive(false);
         }
 

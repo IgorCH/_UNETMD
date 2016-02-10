@@ -65,10 +65,10 @@ namespace MostDanger {
 	    static public void AddTank(GameObject tank, int playerNum, Color c, string name)
 	    {
 			CharacterManager tmp = new CharacterManager();
-	        tmp.m_Instance = tank;
-	        tmp.m_PlayerNumber = playerNum;
-	        tmp.m_PlayerColor = c;
-	        tmp.m_PlayerName = name;
+	        tmp.Instance = tank;
+	        tmp.PlayerNumber = playerNum;
+	        tmp.PlayerColor = c;
+	        tmp.PlayerName = name;
 	        tmp.Setup();
 
 	        m_Tanks.Add(tmp);
@@ -79,7 +79,7 @@ namespace MostDanger {
 			CharacterManager toRemove = null;
 	        foreach (var tmp in m_Tanks)
 	        {
-	            if (tmp.m_Instance == tank)
+	            if (tmp.Instance == tank)
 	            {
 	                toRemove = tmp;
 	                break;
@@ -283,7 +283,7 @@ namespace MostDanger {
 	        for (int i = 0; i < m_Tanks.Count; i++)
 	        {
 	            // ... and if they are active, increment the counter.
-	            if (m_Tanks[i].m_TankRenderers.activeSelf)
+	            if (m_Tanks[i].renderers.activeSelf)
 	                numTanksLeft++;
 	        }
 
@@ -300,7 +300,7 @@ namespace MostDanger {
 	        for (int i = 0; i < m_Tanks.Count; i++)
 	        {
 	            // ... and if one of them is active, it is the winner so return it.
-	            if (m_Tanks[i].m_TankRenderers.activeSelf)
+	            if (m_Tanks[i].renderers.activeSelf)
 	                return m_Tanks[i];
 	        }
 
@@ -348,10 +348,10 @@ namespace MostDanger {
 
 	        // If there is a game winner set the message to say which player has won the game.
 	        if (m_GameWinner != null)
-	            message = "<color=#" + ColorUtility.ToHtmlStringRGB(m_GameWinner.m_PlayerColor) + ">"+ m_GameWinner.m_PlayerName + "</color> WINS THE GAME!";
+	            message = "<color=#" + ColorUtility.ToHtmlStringRGB(m_GameWinner.PlayerColor) + ">"+ m_GameWinner.PlayerName + "</color> WINS THE GAME!";
 	        // If there is a winner, change the message to display 'PLAYER #' in their color and a winning message.
 	        else if (m_RoundWinner != null)
-	            message = "<color=#" + ColorUtility.ToHtmlStringRGB(m_RoundWinner.m_PlayerColor) + ">" + m_RoundWinner.m_PlayerName + "</color> WINS THE ROUND!";
+	            message = "<color=#" + ColorUtility.ToHtmlStringRGB(m_RoundWinner.PlayerColor) + ">" + m_RoundWinner.PlayerName + "</color> WINS THE ROUND!";
 
 	        // After either the message of a draw or a winner, add some space before the leader board.
 	        message += "\n\n";
@@ -359,7 +359,7 @@ namespace MostDanger {
 	        // Go through all the tanks and display their scores with their 'PLAYER #' in their color.
 	        for (int i = 0; i < m_Tanks.Count; i++)
 	        {
-	            message += "<color=#" + ColorUtility.ToHtmlStringRGB(m_Tanks[i].m_PlayerColor) + ">" + m_Tanks[i].m_PlayerName + "</color>: " + m_Tanks[i].m_Wins + " WINS " 
+	            message += "<color=#" + ColorUtility.ToHtmlStringRGB(m_Tanks[i].PlayerColor) + ">" + m_Tanks[i].PlayerName + "</color>: " + m_Tanks[i].m_Wins + " WINS " 
 	                + (m_Tanks[i].IsReady()? "<size=15>READY</size>" : "") + " \n";
 	        }
 
@@ -375,7 +375,7 @@ namespace MostDanger {
 	    {
 	        for (int i = 0; i < m_Tanks.Count; i++)
 	        {
-	            m_Tanks[i].m_SpawnPoint = m_SpawnPoint[m_Tanks[i].m_Setup.m_PlayerNumber];
+	            m_Tanks[i].spawnPoint = m_SpawnPoint[m_Tanks[i].characterSetup.PlayerNumber];
 	            m_Tanks[i].Reset();
 	        }
 	    }

@@ -4,8 +4,6 @@ using System.Collections;
 
 public class AirplaneController : NetworkBehaviour
 {
-    //TODO вынести настроечные поля
-    //настроить полет
 
     #region Magic Nums
     private const float MaxSpeed = 700f;
@@ -58,7 +56,7 @@ public class AirplaneController : NetworkBehaviour
 
 	void Start ()
     {
-	
+		_groundTrigger.IsTriggered = true;
 	}
 	
 	void Update ()
@@ -129,7 +127,8 @@ public class AirplaneController : NetworkBehaviour
 
         transform.Translate(0F, _upLift * Time.deltaTime / 10.0F, 0F);
 
-        _upLift = -700 + _speed;
+        _upLift = -500 + _speed;
+
         if (_groundTrigger.IsTriggered && _upLift < 0) _upLift = 0;
 
         if (_speed < 595)
@@ -142,23 +141,61 @@ public class AirplaneController : NetworkBehaviour
 
 		if (Input.GetMouseButtonDown (0))
 		{
-			Fire ();		
+			MachineGunFire ();		
 		}
+
+		if (Input.GetMouseButtonDown (1))
+		{
+			BombFire ();		
+		}
+			
+		if (Input.GetKeyDown (KeyCode.Q))
+		{
+			Catapult ();		
+		}
+			
     }
 
-	private void Fire()
+	private void MachineGunFire()
 	{
-
-		CmdFire(rigidbody.velocity, 300f, transform.forward, transform.position + transform.forward * 5, transform.rotation);
+		if (UnityEngine.Random.Range (0, 10) < 5) {
+			CmdMachineGunFire (rigidbody.velocity, 200f, LeftMachineGun.forward, LeftMachineGun.position + LeftMachineGun.forward * 5, LeftMachineGun.rotation);
+		} else {
+			CmdMachineGunFire (rigidbody.velocity, 200f, RightMachineGun.forward, RightMachineGun.position + RightMachineGun.forward * 5, RightMachineGun.rotation);	
+		}
 
 	}
 
 	[Command]
-	private void CmdFire(Vector3 rigidbodyVelocity, float launchForce, Vector3 forward, Vector3 position, Quaternion rotation)
+	private void CmdMachineGunFire(Vector3 rigidbodyVelocity, float launchForce, Vector3 forward, Vector3 position, Quaternion rotation)
 	{
 		GameObject newAirplaneMachineGunBullet = Instantiate(AirplaneMachineGunBullet, position, rotation) as GameObject;
 		newAirplaneMachineGunBullet.GetComponent<Rigidbody>().velocity = rigidbodyVelocity + launchForce * forward;
 		NetworkServer.Spawn(newAirplaneMachineGunBullet);
+	}
+
+	private void BombFire()
+	{
+		CmdBombFire(rigidbody.velocity, 3f, -transform.up, transform.position - transform.up * 5, transform.rotation);
+	}
+
+	[Command]
+	private void CmdBombFire(Vector3 rigidbodyVelocity, float launchForce, Vector3 forward, Vector3 position, Quaternion rotation)
+	{
+		GameObject newAirplaneMachineGunBullet = Instantiate(AirplaneMachineGunBullet, position, rotation) as GameObject;
+		newAirplaneMachineGunBullet.GetComponent<Rigidbody>().velocity = rigidbodyVelocity + launchForce * forward;
+		NetworkServer.Spawn(newAirplaneMachineGunBullet);
+	}
+
+	public void Catapult ()
+	{
+		
+	}
+
+	[Command]
+	public void CmdCatapult ()
+	{
+		
 	}
 
     void OnCollisionEnter(Collision collision)
@@ -172,9 +209,4 @@ public class AirplaneController : NetworkBehaviour
         }
     }
 
-    private void LateUpdate()
-    {
-        //GetComponent<CameraController>().CameraBackOffset = 10;
-        //GetComponent<CameraController>().CameraTopOffset = 4;
-    }
 }

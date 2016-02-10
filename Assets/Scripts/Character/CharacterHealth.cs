@@ -13,19 +13,21 @@ namespace MostDanger {
 	    public Color m_ZeroHealthColor = Color.red;       // The color the health bar will be when on no health.
 	    public AudioClip m_TankExplosion;                 // The clip to play when the tank explodes.
 	    public ParticleSystem m_ExplosionParticles;       // The particle system the will play when the tank is destroyed.
-	    public GameObject m_TankRenderers;                // References to all the gameobjects that need to be disabled when the tank is dead.
+	    public GameObject renderers;                // References to all the gameobjects that need to be disabled when the tank is dead.
 	    public GameObject m_HealthCanvas;
 	    public GameObject m_AimCanvas;
 	    public GameObject m_LeftDustTrail;
 	    public GameObject m_RightDustTrail;
 		public CharacterSetup m_Setup;
-		public CharacterManager m_Manager;                   //Associated manager, to disable control when dying.
+		public CharacterManager Manager;                   //Associated manager, to disable control when dying.
 
 	    [SyncVar(hook = "OnCurrentHealthChanged")]
 	    private float m_CurrentHealth;                  // How much health the tank currently has.*
+
 	    [SyncVar]
 	    private bool m_ZeroHealthHappened;              // Has the tank been reduced beyond zero health yet?
-	    private BoxCollider m_Collider;                 // Used so that the tank doesn't collide with anything when it's dead.
+	    
+		private BoxCollider m_Collider;                 // Used so that the tank doesn't collide with anything when it's dead.
 
 
 	    private void Awake()
@@ -96,14 +98,14 @@ namespace MostDanger {
 	    {
 	        m_Collider.enabled = active;
 
-	        m_TankRenderers.SetActive(active);
+	        renderers.SetActive(active);
 	        m_HealthCanvas.SetActive(active);
 	        m_AimCanvas.SetActive(active);
 	        m_LeftDustTrail.SetActive(active);
 	        m_RightDustTrail.SetActive(active);
 
-	        if (active) m_Manager.EnableControl();
-	        else m_Manager.DisableControl();
+	        if (active) Manager.EnableControl();
+	        else Manager.DisableControl();
 
 	        m_Setup.ActivateCrown(active);
 	    }

@@ -8,7 +8,7 @@ namespace MostDanger {
 	public class Bazooka : Weapon {
 
 
-		public Rigidbody Shell;                 // Prefab of the shell.
+		public Rigidbody Shell;
 		public Transform m_FireTransform;         // A child of the tank where the shells are spawned.
 
 		public Slider m_AimSlider;                // A child of the tank that displays the current launch force.
@@ -16,54 +16,54 @@ namespace MostDanger {
 		public AudioClip m_ChargingClip;          // Audio that plays when each shot is charging up.
 		public AudioClip m_FireClip;              // Audio that plays when each shot is fired.
 
-		public float m_MinLaunchForce = 15f;      // The force given to the shell if the fire button is not held.
-		public float m_MaxLaunchForce = 30f;      // The force given to the shell if the fire button is held for the max charge time.
-		public float m_MaxChargeTime = 0.75f;     // How long the shell can charge for before it is fired at max force.
+		private float _minLaunchForce = 15f;      // The force given to the shell if the fire button is not held.
+		private float _maxLaunchForce = 30f;      // The force given to the shell if the fire button is held for the max charge time.
+		private float _maxChargeTime = 0.75f;     // How long the shell can charge for before it is fired at max force.
 
-		private Rigidbody m_Rigidbody;          // Reference to the rigidbody component.
+		private Rigidbody _rigidbody;          // Reference to the rigidbody component.
 	
 		[SyncVar]
-		private float m_CurrentLaunchForce;     // The force that will be given to the shell when the fire button is released.
+		private float _currentLaunchForce;     // The force that will be given to the shell when the fire button is released.
 
 		[SyncVar]
-		private float m_ChargeSpeed;            // How fast the launch force increases, based on the max charge time.
-		private bool m_Fired;                   // Whether or not the shell has been launched with this button press.
+		private float _chargeSpeed;            // How fast the launch force increases, based on the max charge time.
+		private bool _fired;                   // Whether or not the shell has been launched with this button press.
 
 		private void Awake()
 		{
-			m_Rigidbody = GetComponent<Rigidbody> ();
+			_rigidbody = GetComponent<Rigidbody> ();
 		}
 
 		private void Start()
 		{
-			m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
+			_chargeSpeed = (_maxLaunchForce - _minLaunchForce) / _maxChargeTime;
 		}
 
 		public override void ManualUpdate () {
 
 			CameraParams = new Vector3 (0, 0, 0);
 
-			m_AimSlider.value = m_MinLaunchForce;
-			if (m_CurrentLaunchForce >= m_MaxLaunchForce && !m_Fired)
+			m_AimSlider.value = _minLaunchForce;
+			if (_currentLaunchForce >= _maxLaunchForce && !_fired)
 			{
-				m_CurrentLaunchForce = m_MaxLaunchForce;
+				_currentLaunchForce = _maxLaunchForce;
 				Fire();
 			}
 			else if (Input.GetMouseButtonDown(0))
 			{
-				m_Fired = false;
-				m_CurrentLaunchForce = m_MinLaunchForce;
+				_fired = false;
+				_currentLaunchForce = _minLaunchForce;
 				m_ShootingAudio.clip = m_ChargingClip;
 				m_ShootingAudio.Play();
 			}
-            else if (Input.GetMouseButton(0) && !m_Fired)
+			else if (Input.GetMouseButton(0) && !_fired)
 			{
-				m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
-				m_AimSlider.value = m_CurrentLaunchForce;
+				_currentLaunchForce += _chargeSpeed * Time.deltaTime;
+				m_AimSlider.value = _currentLaunchForce;
 			}
-            else if (Input.GetMouseButtonUp(0) && !m_Fired)
+			else if (Input.GetMouseButtonUp(0) && !_fired)
 			{
-				m_Fired = true;
+				_fired = true;
 				Fire();
 			}
 
@@ -73,8 +73,8 @@ namespace MostDanger {
 		{
 			m_ShootingAudio.clip = m_FireClip;
 			m_ShootingAudio.Play();
-			CmdFire(m_Rigidbody.velocity, m_CurrentLaunchForce, m_FireTransform.forward, m_FireTransform.position, m_FireTransform.rotation);
-			m_CurrentLaunchForce = m_MinLaunchForce;
+			CmdFire(_rigidbody.velocity, _currentLaunchForce, m_FireTransform.forward, m_FireTransform.position, m_FireTransform.rotation);
+			_currentLaunchForce = _minLaunchForce;
 		}
 
 		[Command]
@@ -88,8 +88,8 @@ namespace MostDanger {
 
 		public void SetDefaults()
 		{
-			m_CurrentLaunchForce = m_MinLaunchForce;
-			m_AimSlider.value = m_MinLaunchForce;
+			_currentLaunchForce = _minLaunchForce;
+			m_AimSlider.value = _minLaunchForce;
 		}
 
 	}
