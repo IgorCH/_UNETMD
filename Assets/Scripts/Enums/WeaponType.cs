@@ -10,7 +10,7 @@
 	LMB - Shoot
 	RMB - Targeting
 
-	CurentWeapon
+	CurrentWeapon
 
 	Spec Slot + GUI
 	Parachute
