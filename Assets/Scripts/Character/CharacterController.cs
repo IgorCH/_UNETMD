@@ -27,6 +27,8 @@ namespace MostDanger {
 
 	    public Animator Animator;
 
+	    private GameObject _highlightedObject;
+
 		public Weapon CurrentWeapon;
 		public List<WeaponStruct> Weapons;
 
@@ -82,17 +84,38 @@ namespace MostDanger {
 				
 			movementInput = Input.GetAxis("Vertical1");
 
-	        EngineAudio();
+		    UpdateHighlightedObject();
+
+		    if (Input.GetKeyDown(KeyCode.R) && _highlightedObject)
+		    {
+                _highlightedObject.GetComponent<AirplaneController>().RpcSetAuthority();
+                Debug.Log("RpcSetAuthority");
+		        gameObject.SetActive(false);
+		    }
+
+		    EngineAudio();
 	    }
 
-		private void OnInventorySelect (WeaponStruct weapon) 
+	    private void UpdateHighlightedObject()
+	    {
+	        _highlightedObject = null;
+	        var objs = FindObjectsOfType<Enginery>();
+	        if (objs.Length > 0)
+	        {
+	            _highlightedObject = objs[0].gameObject;
+                Debug.Log("_highlightedObject- " + _highlightedObject.name);
+	        }
+	    }
+
+	    private void OnInventorySelect (WeaponStruct weapon) 
 		{
+            Debug.Log("OnInventorySelect 1" + weapon.ScriptName);
 			if (CurrentWeapon)
 			{
 				Destroy (CurrentWeapon);
 			}
 			CurrentWeapon = (Weapon)gameObject.GetComponent("MostDanger." + Type.GetType(weapon.ScriptName));
-			Debug.Log(CurrentWeapon);
+			Debug.Log("OnInventorySelect|" + CurrentWeapon + "|");
 
 		}
 
@@ -135,25 +158,16 @@ namespace MostDanger {
 
 	    private void Move()
 	    {
-	        // Create a movement vector based on the input, speed and the time between frames, in the direction the tank is facing.
 	        Vector3 movement = transform.forward * movementInput * m_Speed * Time.deltaTime;
-
 			Animator.SetFloat("MoveSpeed", movementInput);
-
-	        // Apply this movement to the rigidbody's position.
 	        Rigidbody.MovePosition(Rigidbody.position + movement);
 	    }
 
 	    private void Turn()
 	    {
-	        // Determine the number of degrees to be turned based on the input, speed and time between frames.
             float turn = (Input.mousePosition.x - oldX) * m_TurnSpeed * Time.deltaTime;
 	        oldX = Input.mousePosition.x;
-
-	        // Make this into a rotation in the y axis.
 	        Quaternion inputRotation = Quaternion.Euler(0f, turn / 10, 0f);
-
-	        // Apply this rotation to the rigidbody's rotation.
 	        Rigidbody.MoveRotation(Rigidbody.rotation * inputRotation);
 	    }
 

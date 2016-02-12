@@ -61,6 +61,10 @@ public class AirplaneController : NetworkBehaviour
 	
 	void Update ()
 	{
+
+        if (!isLocalPlayer)
+            return;
+
 	    ManualUpdate();
 	}
 
@@ -207,6 +211,12 @@ public class AirplaneController : NetworkBehaviour
             _speed = 0;
 			rigidbody.useGravity = true;
         }
+    }
+
+    [Server]
+    public void RpcSetAuthority()
+    {
+        Debug.Log("set Authority");
     }
 
 }

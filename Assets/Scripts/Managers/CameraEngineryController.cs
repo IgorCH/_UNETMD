@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class CameraController : NetworkBehaviour
+public class CameraEngineryController : NetworkBehaviour
 {
 
     private Transform CameraTransform;
@@ -18,7 +18,7 @@ public class CameraController : NetworkBehaviour
     void LateUpdate()
     {
         Debug.Log(gameObject.name + isLocalPlayer + hasAuthority + localPlayerAuthority);
-        if (isLocalPlayer)
+        if (isLocalPlayer && hasAuthority)
         {
             CameraTransform.position = CharacterTransform.position - CharacterTransform.forward*10 +
                                        CharacterTransform.up*5;
