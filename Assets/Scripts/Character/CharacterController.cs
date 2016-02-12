@@ -88,8 +88,8 @@ namespace MostDanger {
 
 		    if (Input.GetKeyDown(KeyCode.R) && _highlightedObject)
 		    {
-                _highlightedObject.GetComponent<AirplaneController>().RpcSetAuthority();
-                Debug.Log("RpcSetAuthority");
+				Debug.Log("CmdSetAuthority");
+                _highlightedObject.GetComponent<AirplaneController>().CmdSetAuthority();
 		        gameObject.SetActive(false);
 		    }
 
@@ -103,7 +103,6 @@ namespace MostDanger {
 	        if (objs.Length > 0)
 	        {
 	            _highlightedObject = objs[0].gameObject;
-                Debug.Log("_highlightedObject- " + _highlightedObject.name);
 	        }
 	    }
 

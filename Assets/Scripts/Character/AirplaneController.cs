@@ -213,10 +213,20 @@ public class AirplaneController : NetworkBehaviour
         }
     }
 
-    [Server]
-    public void RpcSetAuthority()
+	[Command]
+    public void CmdSetAuthority()
     {
-        Debug.Log("set Authority");
+		Debug.Log("Command CmdSetAuthority");
     }
+
+	public void OnStartAuthority()
+	{
+		Debug.Log ("OnStartAuthority");
+	}
+
+	public void OnStopAuthority()
+	{
+		Debug.Log ("OnStopAuthority");
+	}
 
 }
