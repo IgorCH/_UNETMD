@@ -88,13 +88,22 @@ namespace MostDanger {
 
 		    if (Input.GetKeyDown(KeyCode.R) && _highlightedObject)
 		    {
-				Debug.Log("CmdSetAuthority");
-                _highlightedObject.GetComponent<AirplaneController>().CmdSetAuthority();
-		        gameObject.SetActive(false);
+                //_highlightedObject.GetComponent<AirplaneController>().SetAuthority();
+				//Debug.Log("IDs: " + this.GetComponent<NetworkIdentity>().connectionToServer.connectionId.ToString());
+				//CmdServerAssignClient (_highlightedObject.name);
+		        //gameObject.SetActive(false);
 		    }
 
 		    EngineAudio();
 	    }
+
+		[Command]
+		void CmdServerAssignClient(string name)
+		{
+			GameObject airplane = GameObject.Find(name);
+			var conn = this.GetComponent<NetworkIdentity> ().connectionToClient;
+			airplane.GetComponent<NetworkIdentity>().AssignClientAuthority(conn);
+		}
 
 	    private void UpdateHighlightedObject()
 	    {
@@ -108,25 +117,20 @@ namespace MostDanger {
 
 	    private void OnInventorySelect (WeaponStruct weapon) 
 		{
-            Debug.Log("OnInventorySelect 1" + weapon.ScriptName);
 			if (CurrentWeapon)
 			{
 				Destroy (CurrentWeapon);
 			}
-			CurrentWeapon = (Weapon)gameObject.GetComponent("MostDanger." + Type.GetType(weapon.ScriptName));
-			Debug.Log("OnInventorySelect|" + CurrentWeapon + "|");
 
+			CurrentWeapon = (Weapon)gameObject.GetComponent("MostDanger." + weapon.ScriptName);
 		}
 
 	    private void EngineAudio()
 	    {
-	        // If there is no input (the tank is stationary)...
-            if (Mathf.Abs(movementInput) < 0.1f && Mathf.Abs(Input.mousePosition.x - oldX) < 0.1f)
+	        if (Mathf.Abs(movementInput) < 0.1f && Mathf.Abs(Input.mousePosition.x - oldX) < 0.1f)
 	        {
-	            // ... and if the audio source is currently playing the driving clip...
 	            if (m_MovementAudio.clip == m_EngineDriving)
 	            {
-	                // ... change the clip to idling and play it.
 	                m_MovementAudio.clip = m_EngineIdling;
 	                m_MovementAudio.pitch = UnityEngine.Random.Range(originalPitch - m_PitchRange, originalPitch + m_PitchRange);
 	                m_MovementAudio.Play();
@@ -134,10 +138,8 @@ namespace MostDanger {
 	        }
 	        else
 	        {
-	            // Otherwise if the tank is moving and the idling clip is currently playing...
 	            if (m_MovementAudio.clip == m_EngineIdling)
 	            {
-	                // ... change the clip to driving and playing.
 	                m_MovementAudio.clip = m_EngineDriving;
 	                m_MovementAudio.pitch = UnityEngine.Random.Range(originalPitch - m_PitchRange, originalPitch + m_PitchRange);
 	                m_MovementAudio.Play();
@@ -150,9 +152,7 @@ namespace MostDanger {
 			if (!isLocalPlayer)
 	            return;
 
-	        // Adjust the rigidbodies position and orientation in FixedUpdate.
-	        Move();
-	        Turn();
+			Move();
 	    }
 
 	    private void Move()
@@ -160,17 +160,13 @@ namespace MostDanger {
 	        Vector3 movement = transform.forward * movementInput * m_Speed * Time.deltaTime;
 			Animator.SetFloat("MoveSpeed", movementInput);
 	        Rigidbody.MovePosition(Rigidbody.position + movement);
-	    }
 
-	    private void Turn()
-	    {
-            float turn = (Input.mousePosition.x - oldX) * m_TurnSpeed * Time.deltaTime;
-	        oldX = Input.mousePosition.x;
-	        Quaternion inputRotation = Quaternion.Euler(0f, turn / 10, 0f);
-	        Rigidbody.MoveRotation(Rigidbody.rotation * inputRotation);
+			float turn = (Input.mousePosition.x - oldX) * m_TurnSpeed * Time.deltaTime;
+			oldX = Input.mousePosition.x;
+			Quaternion inputRotation = Quaternion.Euler(0f, turn / 10, 0f);
+			Rigidbody.MoveRotation(Rigidbody.rotation * inputRotation);
 	    }
-
-	    // This function is called at the start of each round to make sure each tank is set up correctly.
+			
 	    public void SetDefaults()
 	    {
 	        Rigidbody.velocity = Vector3.zero;
