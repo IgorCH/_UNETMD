@@ -229,4 +229,92 @@ public class AirplaneController : NetworkBehaviour
 		Debug.Log ("OnStopAuthority");
 	}
 
+
+
+
+
+
+
+
+
+
+    // script that handles the trigger collision with the player
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Airplane Trigger Enter");
+        if (other.gameObject.tag == "Player")
+        {
+           // other.gameObject.GetComponent<SwitchControllers>().DisablePlayerEnableCar();
+        }
+    }
+
+
+
+
+
+
+    //The script SwitchControllers attached to the players, DisablePlayerEnableCar does some 
+    //activating/deactivating of components but the first thing we're interested in for this thread is here:
+    public void DisablePlayerEnableCar()
+    {
+        if (!isLocalPlayer)
+            return;
+
+        Debug.Log("IDs: " + this.GetComponent<NetworkIdentity>().connectionToServer.connectionId.ToString());
+
+        CmdServerAssignClient();
+        //this.GetComponent<PlayerCarController>().enabled = true;
+    }
+
+    [Command]
+    private void CmdServerAssignClient()
+    {
+        GameObject CarServer = GameObject.Find("AssaultVehicle");
+        CarServer.GetComponent<NetworkIdentity>().AssignClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
+    }
+
+    [Command]
+    private void CmdServerRemoveClient()
+    {
+        GameObject CarServer = GameObject.Find("AssaultVehicle");
+        CarServer.GetComponent<NetworkIdentity>().RemoveClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
+    }
+
+
+
+
+    /*
+     * PlayerCarController script on the player object
+    void Start()
+    {
+        if (isLocalPlayer)
+        {
+            Car = GameObject.Find("AssaultVehicle");
+            CarScript = Car.GetComponent<AssaultCarController>();
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (!isLocalPlayer)
+            return;
+
+        float Steer = Input.GetAxis("Horizontal");
+        float inputPower = Input.GetAxis("Vertical");
+
+        if (PreviousPower != inputPower || PreviousSteer != Steer)
+        {
+            CarScript.CarControl(Steer, inputPower);
+            // CmdCallCarScript(Steer, inputPower); // no longer needed with client authority
+            PreviousSteer = Steer;
+            PreviousPower = inputPower;
+        }
+
+    }*/
+
+
 }
+
+
+
+

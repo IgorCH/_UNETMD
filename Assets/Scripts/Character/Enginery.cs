@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Enginery : MonoBehaviour
+namespace MostDanger
 {
+    public class Enginery : MonoBehaviour
+    {
 
-    public bool IsBusy;
+        public bool IsBusy;
 
 
+    }
 }
