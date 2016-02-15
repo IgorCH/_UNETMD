@@ -281,8 +281,6 @@ public class AirplaneController : NetworkBehaviour
     }
 
 
-
-
     /*
      * PlayerCarController script on the player object
     void Start()
@@ -305,11 +303,9 @@ public class AirplaneController : NetworkBehaviour
         if (PreviousPower != inputPower || PreviousSteer != Steer)
         {
             CarScript.CarControl(Steer, inputPower);
-            // CmdCallCarScript(Steer, inputPower); // no longer needed with client authority
             PreviousSteer = Steer;
             PreviousPower = inputPower;
         }
-
     }*/
 
 
