@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
@@ -49,7 +50,7 @@ namespace MostDanger {
 				_currentLaunchForce = _maxLaunchForce;
 				Fire();
 			}
-			else if (Input.GetMouseButtonDown(0))
+			else if (Input.GetMouseButtonDown(0) && !EventSystem.current.currentSelectedGameObject)
 			{
 				_fired = false;
 				_currentLaunchForce = _minLaunchForce;
@@ -86,7 +87,7 @@ namespace MostDanger {
 			NetworkServer.Spawn(shellInstance.gameObject);
 		}
 
-		public void SetDefaults()
+		public override void SetDefaults()
 		{
 			_currentLaunchForce = _minLaunchForce;
 			m_AimSlider.value = _minLaunchForce;

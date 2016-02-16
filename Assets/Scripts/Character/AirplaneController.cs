@@ -68,11 +68,11 @@ namespace MostDanger {
 		
 		void Update ()
 		{
-
-			if (hasAuthority && _enginery.IsBusy)
-	            return;
-
-		    ManualUpdate();
+			if (hasAuthority && _enginery.Pilot) {
+				ManualUpdate ();
+			} else {
+				//TODO Автопилот
+			}
 		}
 
 	    public void ManualUpdate ()
@@ -200,13 +200,19 @@ namespace MostDanger {
 
 		public void Catapult ()
 		{
+			
 			CmdCatapult ();
 		}
 
 		[Command]
 		public void CmdCatapult ()
 		{
-			
+			var pilotGO = GetComponent<Enginery> ().Pilot;
+			pilotGO.GetComponent<Transform> ().position = GetComponent<Transform> ().position + new Vector3 (0, 5, 0);
+			pilotGO.GetComponent<Transform> ().rotation = GetComponent<Transform> ().rotation;
+			var pilotClientConnection = pilotGO.GetComponent<NetworkIdentity> ().connectionToClient;
+			GetComponent<NetworkIdentity> ().RemoveClientAuthority (pilotClientConnection);
+			pilotGO.SetActive (true);
 		}
 
 	    void OnCollisionEnter(Collision collision)
@@ -219,7 +225,22 @@ namespace MostDanger {
 				_rigidbody.useGravity = true;
 	        }
 	    }
-			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		public void SetAuthority()
 		{
 			Debug.Log("On Airplane called Command SetAuthority");
@@ -229,17 +250,17 @@ namespace MostDanger {
 		[Command]
 		public void CmdSetAuthority()
 	    {
-			Debug.Log("On Airplane called Command CmdSetAuthority");
-			GetComponent<Enginery> ().IsBusy = true;
+			//Debug.Log("On Airplane called Command CmdSetAuthority");
+			//GetComponent<Enginery> ().IsBusy = true;
 			//CarServer.GetComponent<NetworkIdentity>().AssignClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
 	    }
 
-		public void OnStartAuthority()
+		public override void OnStartAuthority()
 		{
 			Debug.Log ("OnStartAuthority");
 		}
 
-		public void OnStopAuthority()
+		public override void OnStopAuthority()
 		{
 			Debug.Log ("OnStopAuthority");
 		}

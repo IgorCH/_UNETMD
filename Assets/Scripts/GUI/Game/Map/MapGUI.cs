@@ -14,8 +14,8 @@ namespace MostDanger
         public GameObject Background;
         public GameObject MarkPrefab;
 
-        private int MapWidth;
-        private int MapHeight;
+        //private int MapWidth;
+        //private int MapHeight;
 
         private Dictionary<Transform, Transform> Objects;
 
@@ -31,8 +31,8 @@ namespace MostDanger
 
         public void Init(int mapWidth, int mapHeight)
         {
-            MapWidth = mapWidth;
-            MapHeight = mapHeight;
+            //MapWidth = mapWidth;
+            //MapHeight = mapHeight;
             Objects = new Dictionary<Transform, Transform>();
         }
 

@@ -93,8 +93,9 @@ namespace MostDanger {
 	    // This is called from start and will run each phase of the game one after another. ONLY ON SERVER (as Start is only called on server)
 	    private IEnumerator GameLoop()
 	    {
-	        while (m_Tanks.Count < 2)
-	            yield return null;
+			//TODO
+	        //while (m_Tanks.Count < 2)
+	        //    yield return null;
 
 	        //wait to be sure that all are ready to start
 	        yield return new WaitForSeconds(2.0f);
@@ -206,7 +207,7 @@ namespace MostDanger {
 	        RpcRoundPlaying();
             
 	        // While there is not one tank left...
-	        while (!OneTankLeft())
+	        while (true/*!OneTankLeft()*/)
 	        {
 	            // ... return on the next frame.
 	            yield return null;

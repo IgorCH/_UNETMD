@@ -358,12 +358,5 @@ namespace UnityStandardAssets.Network
         }
 
 
-
-
-
-        public void OpenAirplaneDemoScene()
-        {
-            SceneManager.LoadScene("AirplaneDemo");
-        }
     }
 }

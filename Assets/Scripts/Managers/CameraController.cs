@@ -17,7 +17,6 @@ public class CameraController : NetworkBehaviour
 
     void LateUpdate()
     {
-        Debug.Log("Character - " + gameObject.name + isLocalPlayer + hasAuthority);
         if (isLocalPlayer)
         {
             CameraTransform.position = CharacterTransform.position - CharacterTransform.forward*10 +

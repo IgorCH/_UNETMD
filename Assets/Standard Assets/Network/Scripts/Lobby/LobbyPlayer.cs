@@ -81,14 +81,14 @@ namespace UnityStandardAssets.Network
             if (isLocalPlayer &&  (obj == null || !obj.isFocused) )
             {
                 int localIdx = playerControllerId + 1;
-                if (!readyToBegin && Input.GetButtonDown("Fire"+ localIdx))
+                /*TODO if (!readyToBegin && Input.GetButtonDown("Fire"))
                 {
                     if(readyButton.IsActive() && readyButton.IsInteractable())
                         SendReadyToBeginMessage();
                 }
 
 
-                if (Input.GetAxis("Vertical" + localIdx) > 0.5f)
+                if (Input.GetAxis("Vertical") > 0.5f)
                 {
                    if(!changedColor)
                     {
@@ -99,7 +99,7 @@ namespace UnityStandardAssets.Network
                 else
                 {
                     changedColor = false;
-                }
+                }*/
             }
         }
 

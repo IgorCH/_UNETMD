@@ -10,28 +10,18 @@ namespace MostDanger {
 
         public GameObject AirplanePrefab;
 
-        private void Awake()
-        {
-        }
-
-        private void Start()
-        {
-        }
-
         public override void ManualUpdate()
         {
-
             if (Input.GetKeyDown(KeyCode.E))
             {
                 CreateAirplane();
             }
-
         }
 
         private void CreateAirplane()
         {
             var trans = GetComponent<Transform>();
-            var pos = trans.position + trans.forward * 10 + trans.up * 2;
+            var pos = trans.position + trans.forward * 10;
             CmdCreateAirplane(pos);
         }
 
@@ -40,10 +30,12 @@ namespace MostDanger {
         {
 			var airplaneInstance = Instantiate(AirplanePrefab, pos, Quaternion.identity) as GameObject;
             airplaneInstance.name = airplaneInstance.name + "_" + gameObject.name;
-//			NetworkServer.Spawn(airplaneInstance);
+			airplaneInstance.GetComponent<Enginery> ().Pilot = gameObject;
 
-			NetworkServer.SpawnWithClientAuthority(airplaneInstance, connectionToClient);
-            gameObject.SetActive(false);
+			//NetworkServer.Spawn(airplaneInstance);
+
+			Debug.Log(NetworkServer.SpawnWithClientAuthority(airplaneInstance, connectionToClient));
+			gameObject.SetActive(false);
         }
 
         public override void SetDefaults()

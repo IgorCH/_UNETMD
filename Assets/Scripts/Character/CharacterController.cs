@@ -62,48 +62,42 @@ namespace MostDanger {
 	    private void Update()
 	    {
 
-			if (!isLocalPlayer)
-				return;
-
-			if (Input.GetKeyDown (KeyCode.Space))
-			{
-				if (InventoryGUI.Instance.IsOpened)
-				{
-					InventoryGUI.Instance.Close ();
-				}
-				else
-				{
-					InventoryGUI.Instance.Open (Weapons, OnInventorySelect);
-				}
-			}
-
-			if (CurrentWeapon)
-			{
-				CurrentWeapon.ManualUpdate ();
-			}
+			if (isLocalPlayer) {
 				
-			movementInput = Input.GetAxis("Vertical1");
+				if (Input.GetKeyDown (KeyCode.Space)) {
+					if (InventoryGUI.Instance.IsOpened) {
+						InventoryGUI.Instance.Close ();
+					} else {
+						InventoryGUI.Instance.Open (Weapons, OnInventorySelect);
+					}
+				}
 
-		    UpdateHighlightedObject();
+				if (CurrentWeapon) {
+					CurrentWeapon.ManualUpdate ();
+				}
+				
+				movementInput = Input.GetAxis ("Vertical1");
 
-		    if (Input.GetKeyDown(KeyCode.R) && _highlightedObject)
-		    {
-                //_highlightedObject.GetComponent<AirplaneController>().SetAuthority();
-				//Debug.Log("IDs: " + this.GetComponent<NetworkIdentity>().connectionToServer.connectionId.ToString());
-				//CmdServerAssignClient (_highlightedObject.name);
-		        //gameObject.SetActive(false);
-		    }
+				UpdateHighlightedObject ();
 
-		    EngineAudio();
+				if (Input.GetKeyDown (KeyCode.R) && _highlightedObject) {
+					//_highlightedObject.GetComponent<AirplaneController>().SetAuthority();
+					//Debug.Log("IDs: " + this.GetComponent<NetworkIdentity>().connectionToServer.connectionId.ToString());
+					//CmdServerAssignClient (_highlightedObject.name);
+					//gameObject.SetActive(false);
+				}
+
+				EngineAudio ();
+			}
 	    }
 
-		[Command]
+		/*[Command]
 		void CmdServerAssignClient(string name)
 		{
 			GameObject airplane = GameObject.Find(name);
 			var conn = this.GetComponent<NetworkIdentity> ().connectionToClient;
 			airplane.GetComponent<NetworkIdentity>().AssignClientAuthority(conn);
-		}
+		}*/
 
 	    private void UpdateHighlightedObject()
 	    {

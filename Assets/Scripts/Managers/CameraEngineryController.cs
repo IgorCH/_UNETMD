@@ -8,31 +8,25 @@ namespace MostDanger {
 	public class CameraEngineryController : NetworkBehaviour
 	{
 
-	    private Transform CameraTransform;
-		private Transform CharacterTransform;
-		private Enginery Enginery;
+	    private Transform _cameraTransform;
+		private Transform _characterTransform;
+		private Enginery _enginery;
 
 		void Start ()
 	    {
-			CameraTransform = Camera.main.GetComponent<Transform> ();
-			CharacterTransform = GetComponent<Transform> ();
-			Enginery = GetComponent<Enginery> ();
-		}
+			_cameraTransform = Camera.main.GetComponent<Transform> ();
+			_characterTransform = GetComponent<Transform> ();
 
-		[ClientCallback]
-		void Update ()
-		{
-			Debug.Log ("Client Update Callback");
+			_enginery = GetComponent<Enginery> ();
 		}
 
 	    void LateUpdate()
 	    {
-	        Debug.Log("Enginery - " + gameObject.name + isLocalPlayer + hasAuthority);
-			if (hasAuthority && Enginery.IsBusy)
+			if (hasAuthority && _enginery.Pilot)
 	        {
-	            CameraTransform.position = CharacterTransform.position - CharacterTransform.forward * 10 +
-	                                       CharacterTransform.up * 5;
-	            CameraTransform.rotation = CharacterTransform.rotation;
+				_cameraTransform.position = _characterTransform.position - _characterTransform.forward * 10 +
+					_characterTransform.up * 5;
+				_cameraTransform.rotation = _characterTransform.rotation;
 	        }
 	    }
 

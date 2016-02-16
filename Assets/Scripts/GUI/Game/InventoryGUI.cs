@@ -66,7 +66,6 @@ namespace MostDanger {
 
 		private void OnInventoryItemClick (WeaponStruct item)
 		{
-            Debug.Log("OnInventoryItemClick 0 ");
 		    Close();
 			Callback (item);
 		}
