@@ -57,12 +57,12 @@ namespace MostDanger {
 				m_ShootingAudio.clip = m_ChargingClip;
 				m_ShootingAudio.Play();
 			}
-			else if (Input.GetMouseButton(0) && !_fired)
+			else if (Input.GetMouseButton(0) && !_fired && !EventSystem.current.currentSelectedGameObject)
 			{
 				_currentLaunchForce += _chargeSpeed * Time.deltaTime;
 				m_AimSlider.value = _currentLaunchForce;
 			}
-			else if (Input.GetMouseButtonUp(0) && !_fired)
+			else if (Input.GetMouseButtonUp(0) && !_fired && !EventSystem.current.currentSelectedGameObject)
 			{
 				_fired = true;
 				Fire();

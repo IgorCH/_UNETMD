@@ -10,7 +10,7 @@ namespace MostDanger {
 	    #region Magic Nums
 	    private const float MaxSpeed = 700f;
 	    private const float Acceleration = 150f;
-		private const float PseudoGravitation = -0.3F;
+		private const float PseudoGravitation = -3F;
 	    #endregion
 
 	    private bool _isCrashed = false;
@@ -84,8 +84,8 @@ namespace MostDanger {
 	        //_rotY = transform.eulerAngles.y;
 	        _rotZ = transform.eulerAngles.z;
 
-	        if (Input.GetAxis("Vertical1") <= 0 && _speed > 595) transform.Rotate((Input.GetAxis("Vertical1") * Time.deltaTime * 80), 0, 0);
-	        if (Input.GetAxis("Vertical1") > 0 && _speed > 595) transform.Rotate((0.8F - _diveSalto) * (Input.GetAxis("Vertical1") * Time.deltaTime * 80F), 0F, 0F);
+	        if (Input.GetAxis("Vertical1") <= 0 && _speed > 495) transform.Rotate((Input.GetAxis("Vertical1") * Time.deltaTime * 80), 0, 0);
+	        if (Input.GetAxis("Vertical1") > 0 && _speed > 495) transform.Rotate((0.8F - _diveSalto) * (Input.GetAxis("Vertical1") * Time.deltaTime * 80F), 0F, 0F);
 
 	        if (_groundTrigger.IsTriggered) transform.Rotate(0, Input.GetAxis("Horizontal1") * Time.deltaTime * 30, 0, Space.World);
 	        if (!_groundTrigger.IsTriggered) transform.Rotate(0, Time.deltaTime * 100 * _rightLeftSoft, 0, Space.World);
@@ -142,7 +142,7 @@ namespace MostDanger {
 
 	        if (_groundTrigger.IsTriggered && _upLift < 0) _upLift = 0;
 
-	        if (_speed < 595)
+	        if (_speed < 495)
 	        {
 	            if (!_frontTrigger.IsTriggered && _rearTrigger.IsTriggered) transform.Rotate(Time.deltaTime * 20, 0, 0);
 	            if (_frontTrigger.IsTriggered && !_rearTrigger.IsTriggered) transform.Rotate(Time.deltaTime * -20, 0, 0);

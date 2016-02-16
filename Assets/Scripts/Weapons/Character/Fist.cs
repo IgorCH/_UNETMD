@@ -32,9 +32,8 @@ namespace MostDanger {
             airplaneInstance.name = airplaneInstance.name + "_" + gameObject.name;
 			airplaneInstance.GetComponent<Enginery> ().Pilot = gameObject;
 
-			//NetworkServer.Spawn(airplaneInstance);
-
-			Debug.Log(NetworkServer.SpawnWithClientAuthority(airplaneInstance, connectionToClient));
+			NetworkServer.Spawn(airplaneInstance);
+			airplaneInstance.GetComponent<NetworkIdentity>().AssignClientAuthority (connectionToClient);
 			gameObject.SetActive(false);
         }
 
