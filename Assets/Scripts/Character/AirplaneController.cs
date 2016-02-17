@@ -232,12 +232,12 @@ namespace MostDanger {
 
     	public override void OnStartAuthority()
 		{
-			Debug.Log ("OnStartAuthority");
+			//Debug.Log ("OnStartAuthority");
 		}
 
 		public override void OnStopAuthority()
 		{
-			Debug.Log ("OnStopAuthority");
+			//Debug.Log ("OnStopAuthority");
 		}
 
 	}

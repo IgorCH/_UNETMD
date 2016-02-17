@@ -19,12 +19,16 @@ namespace MostDanger {
 	    public AudioClip m_EngineDriving;        // Audio to play when the tank is moving.
 	    public ParticleSystem m_LeftDustTrail;   // The particle system of dust that is kicked up from the left track.
 	    public ParticleSystem m_RightDustTrail;  // The particle system of dust that is kicked up from the rightt track.
-	    public Rigidbody Rigidbody;              // Reference used to move the tank.
+	    
+        public Rigidbody Rigidbody;              // Reference used to move the tank.
 
 	    private float originalPitch;             // The pitch of the audio source at the start of the scene.
 
 	    public Animator Animator;
+	    private Transform _transform;
 
+
+        [SyncVar]
 	    private GameObject _highlightedObject;
 
 		public Weapon CurrentWeapon;
@@ -32,7 +36,8 @@ namespace MostDanger {
 
 	    private void Awake()
 	    {
-	        Rigidbody = GetComponent<Rigidbody>();
+	        //Rigidbody = GetComponent<Rigidbody>();
+	        _transform = GetComponent<Transform>();
 
 			Weapons = new List<WeaponStruct> ();
 
@@ -76,33 +81,46 @@ namespace MostDanger {
 
 				UpdateHighlightedObject ();
 
-				if (Input.GetKeyDown (KeyCode.R) && _highlightedObject) {
-					//_highlightedObject.GetComponent<AirplaneController>().SetAuthority();
-					//Debug.Log("IDs: " + this.GetComponent<NetworkIdentity>().connectionToServer.connectionId.ToString());
-					//CmdServerAssignClient (_highlightedObject.name);
-					//gameObject.SetActive(false);
+				if (Input.GetKeyDown (KeyCode.T) && _highlightedObject) {
+					CmdServerAssignClient (_highlightedObject);
+					gameObject.SetActive(false);
 				}
 
 				EngineAudio ();
 			}
 	    }
 
-		/*[Command]
-		void CmdServerAssignClient(string name)
+	    [Command]
+		void CmdServerAssignClient(GameObject obj)
 		{
-			GameObject airplane = GameObject.Find(name);
-			var conn = this.GetComponent<NetworkIdentity> ().connectionToClient;
-			airplane.GetComponent<NetworkIdentity>().AssignClientAuthority(conn);
-		}*/
+            obj.GetComponent<NetworkIdentity>().AssignClientAuthority(connectionToClient);
+            obj.GetComponent<Enginery>().Pilot = gameObject;
+		}
 
 	    private void UpdateHighlightedObject()
 	    {
 	        _highlightedObject = null;
 	        var objs = FindObjectsOfType<Enginery>();
 
-			if (objs.Length > 0) {
-				//TODO Перебрать всех и выбрать ближний
-				_highlightedObject = objs [0].gameObject;
+            var nearDistance = float.MaxValue;
+	        var tempNearDistance = float.MaxValue;
+
+	        foreach (var obj in objs)
+	        {
+                if(obj.Pilot) continue;
+
+	            var objTransform = obj.GetComponent<Transform>();
+
+	            tempNearDistance = Vector3.Distance(objTransform.position, _transform.position);
+	            if (tempNearDistance < nearDistance)
+	            {
+	                nearDistance = tempNearDistance;
+                    _highlightedObject = obj.gameObject;
+	            }
+	        }
+
+            if (_highlightedObject)
+            {
 				InventoryGUI.Instance.SetSelectectedObjectName.text = _highlightedObject.name;
 			} else {
 				InventoryGUI.Instance.SetSelectectedObjectName.text = "";
@@ -156,7 +174,7 @@ namespace MostDanger {
 			Vector3 strafeSpeed = transform.right * Input.GetAxis ("Horizontal1") * m_Speed * Time.deltaTime;
 
 			Animator.SetFloat("MoveSpeed", Input.GetAxis ("Vertical1"));
-			Rigidbody.velocity = 100 * (moveSpeed + strafeSpeed);
+			Rigidbody.velocity = 100 * (moveSpeed + strafeSpeed) + Physics.gravity;
 
 			float turn = Input.GetAxis("Mouse X") * m_TurnSpeed * Time.deltaTime;
 			Quaternion inputRotation = Quaternion.Euler(0f, turn / 10, 0f);
@@ -190,13 +208,13 @@ namespace MostDanger {
 	    protected RigidbodyConstraints _originalConstrains;
 	    void OnDisable()
 	    {
-	        _originalConstrains = Rigidbody.constraints;
-	        Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+	        //_originalConstrains = Rigidbody.constraints;
+	        //Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 	    }
 
 	    void OnEnable()
 	    {
-	        Rigidbody.constraints = _originalConstrains;
+	        //Rigidbody.constraints = _originalConstrains;
 	    }
 	}
 

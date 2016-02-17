@@ -22,8 +22,8 @@ namespace MostDanger {
 		private float tailRotorVelocity = 0.0f; // value between 0 and 1
 		private float tailRotorRotation = 0.0f; // degrees... used for animating rotors
 
-		private float forwardRotorTorqueMultiplier = 0.5f; // multiplier for control input
-		private float sidewaysRotorTorqueMultiplier = 0.5f; // multiplier for control input
+		private float forwardRotorTorqueMultiplier = 0.05f; // multiplier for control input
+		private float sidewaysRotorTorqueMultiplier = 0.05f; // multiplier for control input
 
 		public bool mainRotorActive = true; // boolean for determining if a prop is active
 		public bool tailRotorActive = true; // boolean for determining if a prop is active
@@ -124,7 +124,34 @@ namespace MostDanger {
 			// too, but this makes it more difficult to balance the helicopter variables so that the helicopter will fly well.
 			rotorVelocity = Mathf.Clamp01(rotorVelocity);
 
-		}	
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                Catapult();
+            }
+
+		}
+
+        public void Catapult()
+        {
+
+            CmdCatapult();
+        }
+
+        [Command]
+        public void CmdCatapult()
+        {
+            var pilot = GetComponent<Enginery>().Pilot;
+
+            var pilotClientConnection = pilot.GetComponent<NetworkIdentity>().connectionToClient;
+            GetComponent<NetworkIdentity>().RemoveClientAuthority(pilotClientConnection);
+            GetComponent<Enginery>().Pilot = null;
+
+
+            pilot.gameObject.SetActive(true);
+            pilot.GetComponent<Transform>().position = GetComponent<Transform>().position - new Vector3(0, 5, 0);
+            pilot.GetComponent<Transform>().rotation = GetComponent<Transform>().rotation;
+
+        }
 
 	}
 

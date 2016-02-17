@@ -7,6 +7,7 @@ namespace MostDanger
     public class Enginery : NetworkBehaviour
     {
 		[SyncVar]
+        [HideInInspector]
 		public GameObject Pilot;
 
     }

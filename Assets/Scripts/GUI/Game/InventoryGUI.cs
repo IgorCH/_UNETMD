@@ -10,12 +10,8 @@ namespace MostDanger {
 		
 	public class InventoryGUI : MonoBehaviour {
 
-		private const float ClosedXPos = 425f;
-		private const float OpenXPos = 0;
-
 		public static InventoryGUI Instance;
 		public bool IsOpened;
-
 
 		private RectTransform rootTransform;
 
@@ -32,8 +28,6 @@ namespace MostDanger {
         {
 			Instance = this;
 			IsOpened = false;
-			//rootTransform = GetComponent<RectTransform> ();
-			//rootTransform.localPosition = new Vector3 (ClosedXPos, 0, 0);
 			InventoryRoot.SetActive(IsOpened);
 		}
 
@@ -59,15 +53,12 @@ namespace MostDanger {
 
 			IsOpened = true;
 			InventoryRoot.SetActive(IsOpened);
-			//rootTransform.localPosition = new Vector3 (OpenXPos, 0, 0);
-
 		}
 
 		public void Close ()
         {
             Cursor.visible = true;
 			IsOpened = false;
-			//rootTransform.localPosition = new Vector3 (ClosedXPos, 0, 0);
 			InventoryRoot.SetActive(IsOpened);
 		}
 
@@ -78,14 +69,14 @@ namespace MostDanger {
 			Callback (item);
 		}
 
-		public void SetSelectedWeapon (string name) 
+		public void SetSelectedWeapon (string Name) 
 		{
-			SetSelectectedWeaponName.text = name;
+			SetSelectectedWeaponName.text = Name;
 		}
 
-		public void SetSelectectedObject (string name)
+		public void SetSelectectedObject (string Name)
 		{
-			SetSelectectedObjectName.text = name;
+			SetSelectectedObjectName.text = Name;
 		}
 	}
 

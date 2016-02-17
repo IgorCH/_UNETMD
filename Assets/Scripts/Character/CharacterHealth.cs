@@ -26,13 +26,13 @@ namespace MostDanger {
 
 	    [SyncVar]
 	    private bool m_ZeroHealthHappened;              // Has the tank been reduced beyond zero health yet?
-	    
-		private BoxCollider m_Collider;                 // Used so that the tank doesn't collide with anything when it's dead.
+
+        private CapsuleCollider m_Collider;                 // Used so that the tank doesn't collide with anything when it's dead.
 
 
 	    private void Awake()
 	    {
-	        m_Collider = GetComponent<BoxCollider>();
+	        m_Collider = GetComponent<CapsuleCollider>();
 	    }
 
 	    public void Damage(float amount)
