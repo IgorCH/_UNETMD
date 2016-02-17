@@ -207,12 +207,17 @@ namespace MostDanger {
 		[Command]
 		public void CmdCatapult ()
 		{
-			var pilotGO = GetComponent<Enginery> ().Pilot;
-			pilotGO.GetComponent<Transform> ().position = GetComponent<Transform> ().position + new Vector3 (0, 5, 0);
-			pilotGO.GetComponent<Transform> ().rotation = GetComponent<Transform> ().rotation;
-			var pilotClientConnection = pilotGO.GetComponent<NetworkIdentity> ().connectionToClient;
+			var pilot = GetComponent<Enginery> ().Pilot;
+
+            var pilotClientConnection = pilot.GetComponent<NetworkIdentity>().connectionToClient;
 			GetComponent<NetworkIdentity> ().RemoveClientAuthority (pilotClientConnection);
-			pilotGO.SetActive (true);
+            GetComponent<Enginery>().Pilot = null;
+
+
+            pilot.gameObject.SetActive(true);
+            pilot.GetComponent<Transform>().position = GetComponent<Transform>().position - new Vector3(0, 5, 0);
+            pilot.GetComponent<Transform>().rotation = GetComponent<Transform>().rotation;
+		    
 		}
 
 	    void OnCollisionEnter(Collision collision)
@@ -226,36 +231,7 @@ namespace MostDanger {
 	        }
 	    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		public void SetAuthority()
-		{
-			Debug.Log("On Airplane called Command SetAuthority");
-			CmdSetAuthority ();
-		}
-
-		[Command]
-		public void CmdSetAuthority()
-	    {
-			//Debug.Log("On Airplane called Command CmdSetAuthority");
-			//GetComponent<Enginery> ().IsBusy = true;
-			//CarServer.GetComponent<NetworkIdentity>().AssignClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
-	    }
-
-		public override void OnStartAuthority()
+    	public override void OnStartAuthority()
 		{
 			Debug.Log ("OnStartAuthority");
 		}
@@ -264,98 +240,6 @@ namespace MostDanger {
 		{
 			Debug.Log ("OnStopAuthority");
 		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	    // script that handles the trigger collision with the player
-	    void OnTriggerEnter(Collider other)
-	    {
-	        //Debug.Log("Airplane Trigger Enter");
-	        if (other.gameObject.tag == "Player")
-	        {
-	           // other.gameObject.GetComponent<SwitchControllers>().DisablePlayerEnableCar();
-	        }
-	    }
-
-
-
-
-
-
-	    //The script SwitchControllers attached to the players, DisablePlayerEnableCar does some 
-	    //activating/deactivating of components but the first thing we're interested in for this thread is here:
-	    public void DisablePlayerEnableCar()
-	    {
-	        if (!isLocalPlayer)
-	            return;
-
-	        Debug.Log("IDs: " + this.GetComponent<NetworkIdentity>().connectionToServer.connectionId.ToString());
-
-	        CmdServerAssignClient();
-	        //this.GetComponent<PlayerCarController>().enabled = true;
-	    }
-
-	    [Command]
-	    private void CmdServerAssignClient()
-	    {
-	        GameObject CarServer = GameObject.Find("AssaultVehicle");
-	        CarServer.GetComponent<NetworkIdentity>().AssignClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
-	    }
-
-	    [Command]
-	    private void CmdServerRemoveClient()
-	    {
-	        GameObject CarServer = GameObject.Find("AssaultVehicle");
-	        CarServer.GetComponent<NetworkIdentity>().RemoveClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
-	    }
-
-
-	    /*
-	     * PlayerCarController script on the player object
-	    void Start()
-	    {
-	        if (isLocalPlayer)
-	        {
-	            Car = GameObject.Find("AssaultVehicle");
-	            CarScript = Car.GetComponent<AssaultCarController>();
-	        }
-	    }
-
-	    void FixedUpdate()
-	    {
-	        if (!isLocalPlayer)
-	            return;
-
-	        float Steer = Input.GetAxis("Horizontal");
-	        float inputPower = Input.GetAxis("Vertical");
-
-	        if (PreviousPower != inputPower || PreviousSteer != Steer)
-	        {
-	            CarScript.CarControl(Steer, inputPower);
-	            PreviousSteer = Steer;
-	            PreviousPower = inputPower;
-	        }
-	    }*/
 
 	}
 

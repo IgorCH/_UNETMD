@@ -70,7 +70,7 @@ namespace UnityStandardAssets.Network
            SetupLocalPlayer();
         }
 
-        bool changedColor = false;
+        //TODObool changedColor = false;
         void Update()
         {
             if (SceneManager.GetActiveScene().name != LobbyManager.s_Singleton.lobbyScene)
@@ -80,7 +80,7 @@ namespace UnityStandardAssets.Network
 
             if (isLocalPlayer &&  (obj == null || !obj.isFocused) )
             {
-                int localIdx = playerControllerId + 1;
+                //int localIdx = playerControllerId + 1;
                 /*TODO if (!readyToBegin && Input.GetButtonDown("Fire"))
                 {
                     if(readyButton.IsActive() && readyButton.IsInteractable())
