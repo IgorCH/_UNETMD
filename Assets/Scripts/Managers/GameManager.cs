@@ -9,7 +9,7 @@ namespace MostDanger {
 
 	public class GameManager : NetworkBehaviour
 	{
-	    static public GameManager s_Instance;
+	    static public GameManager Instance;
 
 	    //this is static so tank can be added even withotu the scene loaded (i.e. from lobby)
 		static public List<CharacterManager> m_Tanks = new List<CharacterManager>();             // A collection of managers for enabling and disabling different aspects of the tanks.
@@ -40,7 +40,7 @@ namespace MostDanger {
 
 	    void Awake()
 	    {
-	        s_Instance = this;
+	        Instance = this;
 	    }
 
 	    [ServerCallback]

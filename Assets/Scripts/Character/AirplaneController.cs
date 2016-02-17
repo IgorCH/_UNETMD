@@ -6,7 +6,7 @@ namespace MostDanger {
 	
 	public class AirplaneController : NetworkBehaviour
 	{
-
+		//TODO Больше настроечных параметров и магических чисел
 	    #region Magic Nums
 	    private const float MaxSpeed = 700f;
 	    private const float Acceleration = 150f;
@@ -81,7 +81,6 @@ namespace MostDanger {
 	        if (_isCrashed) return;
 
 	        _rotX = transform.eulerAngles.x;
-	        //_rotY = transform.eulerAngles.y;
 	        _rotZ = transform.eulerAngles.z;
 
 	        if (Input.GetAxis("Vertical1") <= 0 && _speed > 495) transform.Rotate((Input.GetAxis("Vertical1") * Time.deltaTime * 80), 0, 0);

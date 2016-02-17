@@ -16,9 +16,15 @@ namespace MostDanger {
 		public static InventoryGUI Instance;
 		public bool IsOpened;
 
+
 		private RectTransform rootTransform;
+
+		public GameObject InventoryRoot;
 		public Transform itemsRoot;
 		public GameObject InventoryItemPrefab;
+
+		public Text SetSelectectedObjectName;
+		public Text SetSelectectedWeaponName;
 
 		private Action<WeaponStruct> Callback;
 
@@ -28,7 +34,7 @@ namespace MostDanger {
 			IsOpened = false;
 			//rootTransform = GetComponent<RectTransform> ();
 			//rootTransform.localPosition = new Vector3 (ClosedXPos, 0, 0);
-            gameObject.SetActive(IsOpened);
+			InventoryRoot.SetActive(IsOpened);
 		}
 
 		public void Open (List<WeaponStruct> weapons, Action<WeaponStruct> callback)
@@ -52,7 +58,7 @@ namespace MostDanger {
 			}
 
 			IsOpened = true;
-            gameObject.SetActive(IsOpened);
+			InventoryRoot.SetActive(IsOpened);
 			//rootTransform.localPosition = new Vector3 (OpenXPos, 0, 0);
 
 		}
@@ -62,13 +68,24 @@ namespace MostDanger {
             Cursor.visible = true;
 			IsOpened = false;
 			//rootTransform.localPosition = new Vector3 (ClosedXPos, 0, 0);
-            gameObject.SetActive(IsOpened);
+			InventoryRoot.SetActive(IsOpened);
 		}
 
 		private void OnInventoryItemClick (WeaponStruct item)
 		{
+			SetSelectedWeapon (item.Name + " (" + item.Count + ")");
 		    Close();
 			Callback (item);
+		}
+
+		public void SetSelectedWeapon (string name) 
+		{
+			SetSelectectedWeaponName.text = name;
+		}
+
+		public void SetSelectectedObject (string name)
+		{
+			SetSelectectedObjectName.text = name;
 		}
 	}
 

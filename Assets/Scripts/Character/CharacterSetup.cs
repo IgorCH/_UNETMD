@@ -14,7 +14,6 @@ namespace MostDanger {
 
 	    [Header("Network")]
 	    
-		[Space]
 	    [SyncVar]
 	    public Color Color;
 
@@ -47,7 +46,7 @@ namespace MostDanger {
 	        for (int i = 0; i < renderers.Length; i++)
 	        {
 	            // ... set their material color to the color specific to this tank.
-	            renderers[i].material.color = Color;
+	            //TODOrenderers[i].material.color = Color;
 	        }
 
 	        if (m_TankRenderers)
@@ -102,7 +101,7 @@ namespace MostDanger {
 
 	    public override void OnNetworkDestroy()
 	    {
-	        GameManager.s_Instance.RemoveTank(gameObject);
+	        GameManager.Instance.RemoveTank(gameObject);
 	    }
 	}
 
