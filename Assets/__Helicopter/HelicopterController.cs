@@ -54,7 +54,7 @@ namespace MostDanger {
 			// main rotor, and the torque applied by the tail rotor.
 			Vector3 torqueValue = Vector3.zero;
 
-			Vector3 controlTorque = new Vector3( Input.GetAxis( "Vertical1" ) * forwardRotorTorqueMultiplier, 1.0f, -Input.GetAxis( "Mouse X" ) * sidewaysRotorTorqueMultiplier );
+			Vector3 controlTorque = new Vector3( Input.GetAxis( "Mouse Y" ) * forwardRotorTorqueMultiplier, 1.0f, -Input.GetAxis( "Mouse X" ) * sidewaysRotorTorqueMultiplier );
 
 			// Now check if the main rotor is active, if it is, then add it's torque to the "Torque Value", and apply the forces to the body of the 
 			// helicopter.
@@ -112,8 +112,8 @@ namespace MostDanger {
 			// Because the torque applied by the main rotor is directly proportional to the velocity of the main rotor and the velocity of the tail rotor,
 			// so when the tail rotor velocity decreases, the body of the helicopter rotates.
 
-			if ( Input.GetAxis( "Mouse Y" ) != 0.0f ) {
-				rotorVelocity += Input.GetAxis( "Mouse Y" ) * 0.001f;
+			if ( Input.GetAxis( "Vertical1" ) != 0.0f ) {
+				rotorVelocity += Input.GetAxis( "Vertical1" ) * 0.001f;
 			} else {
 				rotorVelocity = Mathf.Lerp( rotorVelocity, hover_Rotor_Velocity, Time.deltaTime * Time.deltaTime * 5 );
 			}
