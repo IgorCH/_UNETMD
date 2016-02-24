@@ -328,13 +328,6 @@ namespace MostDanger {
 	                return m_Tanks[i];
 	        }
 
-	        //go throught a second time to enable/disable the crown on tanks
-	        //(note : we don't enter it if the maxScore is 0, as no one is current leader yet!)
-	        for (int i = 0; i < m_Tanks.Count && maxScore > 0; i++)
-	        {
-	            m_Tanks[i].SetLeader(maxScore == m_Tanks[i].m_Wins);
-	        }
-
 	        // If no tanks have enough rounds to win, return null.
 	        return null;
 	    }

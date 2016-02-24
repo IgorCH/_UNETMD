@@ -31,6 +31,7 @@ namespace MostDanger {
         [SyncVar]
 	    private GameObject _highlightedObject;
 
+        [HideInInspector]
 		public Weapon CurrentWeapon;
 		public List<WeaponStruct> Weapons;
 
@@ -51,7 +52,35 @@ namespace MostDanger {
 				Name = "Bazooka",
 				ScriptName = "Bazooka",
 				Count = 100
-			});	
+			});
+
+            Weapons.Add(new WeaponStruct()
+            {
+                Name = "Rifle",
+                ScriptName = "Rifle",
+                Count = -1
+            });
+
+            Weapons.Add(new WeaponStruct()
+            {
+                Name = "Grenade",
+                ScriptName = "Grenade",
+                Count = -1
+            });
+
+            Weapons.Add(new WeaponStruct()
+            {
+                Name = "Dynamite",
+                ScriptName = "Dynamite",
+                Count = -1
+            });
+
+            Weapons.Add(new WeaponStruct()
+            {
+                Name = "Jetpack",
+                ScriptName = "Dynamite",
+                Count = -1
+            });
 
 			CurrentWeapon = (Weapon)gameObject.GetComponent("MostDanger.Fist");
 	    }
@@ -178,6 +207,11 @@ namespace MostDanger {
 
 			float turn = Input.GetAxis("Mouse X") * m_TurnSpeed * Time.deltaTime;
 			Quaternion inputRotation = Quaternion.Euler(0f, turn / 10, 0f);
+
+            //Debug.Log(Input.GetAxis("Mouse X"));
+            //Debug.Log(inputRotation); 
+            //Debug.Log(Rigidbody.rotation);
+
 			Rigidbody.MoveRotation(Rigidbody.rotation * inputRotation);
 	    }
 			

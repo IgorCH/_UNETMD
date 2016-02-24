@@ -1,42 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
 namespace MostDanger {
 	
 	public class Jetpack : Weapon {
 
-		private void Awake()
-		{
-			//_rigidbody = GetComponent<Rigidbody> ();
-		}
+        public Rigidbody _rigidbody;
 
-		private void Start()
-		{
-			
-		}
+        private void Awake()
+        {
+            _rigidbody = GetComponent<Rigidbody>();
+        }
 
-		public override void ManualUpdate () {
+        private void Start()
+        {
 
-			CameraParams = new Vector3 (0, 0, 0);
+        }
 
-			if(Input.GetMouseButtonDown(0)) {
-				
-			}
+        public override void ManualUpdate()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
 
-			if(Input.GetMouseButton(0)) {
+            }
 
-			}
+            if (Input.GetMouseButton(0))
+            {
 
-			if(Input.GetMouseButtonUp(0)) {
+            }
 
-			}
+            if (Input.GetMouseButtonUp(0))
+            {
 
-		}
+            }
 
-		public override void SetDefaults()
-		{
+        }
 
-		}
+        public override void SetDefaults()
+        {
+
+        }
+
 	}
 
 }
