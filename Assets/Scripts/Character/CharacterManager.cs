@@ -72,11 +72,6 @@ namespace MostDanger {
 	        return characterSetup.PlayerName;
 	    }
 
-	    public void SetLeader(bool leader)
-	    { 
-	        characterSetup.SetLeader(leader);
-	    }
-
 	    public bool IsReady()
 	    {
 	        return characterSetup.IsReady;

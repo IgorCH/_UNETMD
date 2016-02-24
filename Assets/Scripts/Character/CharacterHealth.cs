@@ -78,8 +78,6 @@ namespace MostDanger {
 
 	        if (active) Manager.EnableControl();
 	        else Manager.DisableControl();
-
-	        m_Setup.ActivateCrown(active);
 	    }
 
 	    public void SetDefaults()

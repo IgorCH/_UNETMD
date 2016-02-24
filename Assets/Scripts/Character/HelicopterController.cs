@@ -5,8 +5,8 @@ namespace MostDanger {
 
 	public class HelicopterController : NetworkBehaviour
 	{
-		private Rigidbody rigidBody;
-		private AudioSource audioSource;
+		private Rigidbody _rigidBody;
+		private AudioSource _audioSource;
 		private Enginery _enginery;
 
 		public GameObject mainRotor; // gameObject to be animated
@@ -28,10 +28,14 @@ namespace MostDanger {
 		public bool mainRotorActive = true; // boolean for determining if a prop is active
 		public bool tailRotorActive = true; // boolean for determining if a prop is active
 
+        public Transform LeftMachineGun;
+        public Transform RightMachineGun;
+        public GameObject AirplaneMachineGunBullet;
+
 		void Awake ()
 		{
-			rigidBody = GetComponent<Rigidbody> ();
-			audioSource = GetComponent<AudioSource> ();
+			_rigidBody = GetComponent<Rigidbody> ();
+			_audioSource = GetComponent<AudioSource> ();
 			_enginery = GetComponent<Enginery> ();
 		}
 
@@ -63,7 +67,7 @@ namespace MostDanger {
 
 				// Now the force of the prop is applied. The main rotor applies a force direclty related to the maximum force of the prop and the 
 				// prop velocity (a value from 0 to 1)
-				rigidBody.AddRelativeForce( Vector3.up * maxRotorForce * rotorVelocity );
+                _rigidBody.AddRelativeForce(Vector3.up * maxRotorForce * rotorVelocity);
 
 				// This is simple code to help stabilize the helicopter. It essentially pulls the body back towards neutral when it is at an angle to
 				// prevent it from tumbling in the air.
@@ -78,14 +82,14 @@ namespace MostDanger {
 			}
 
 			// And finally, apply the torques to the body of the helicopter.
-			rigidBody.AddRelativeTorque( torqueValue );
+            _rigidBody.AddRelativeTorque(torqueValue);
 		}
 
 		void ManualUpdate ()
 		{
 			
 			// This line simply changes the pitch of the attached audio emitter to match the speed of the main rotor.
-			audioSource.pitch = rotorVelocity;
+			_audioSource.pitch = rotorVelocity;
 
 			// Now we animate the rotors, simply by setting their rotation to an increasing value multiplied by the helicopter body's rotation.
 			if (mainRotorActive)
@@ -104,7 +108,7 @@ namespace MostDanger {
 
 			// here we find the velocity required to keep the helicopter level. With the rotors at this speed, all forces on the helicopter cancel 
 			// each other out and it should hover as-is.
-			var hover_Rotor_Velocity = rigidBody.mass * Mathf.Abs( Physics.gravity.y ) / maxRotorForce;
+            var hover_Rotor_Velocity = _rigidBody.mass * Mathf.Abs(Physics.gravity.y) / maxRotorForce;
 			var hover_Tail_Rotor_Velocity = maxRotorForce * rotorVelocity / maxTailRotorForce;
 
 			// Now check if the player is applying any throttle control input, if they are, then increase or decrease the prop velocity, otherwise, 
@@ -124,12 +128,38 @@ namespace MostDanger {
 			// too, but this makes it more difficult to balance the helicopter variables so that the helicopter will fly well.
 			rotorVelocity = Mathf.Clamp01(rotorVelocity);
 
+            if (Input.GetMouseButtonDown(0))
+            {
+                MachineGunFire();
+            }
+
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 Catapult();
             }
 
 		}
+
+        private void MachineGunFire()
+        {
+            if (UnityEngine.Random.Range(0, 10) < 5)
+            {
+                CmdMachineGunFire(_rigidBody.velocity, 200f, LeftMachineGun.forward, LeftMachineGun.position + LeftMachineGun.forward * 5, LeftMachineGun.rotation);
+            }
+            else
+            {
+                CmdMachineGunFire(_rigidBody.velocity, 200f, RightMachineGun.forward, RightMachineGun.position + RightMachineGun.forward * 5, RightMachineGun.rotation);
+            }
+
+        }
+
+        [Command]
+        private void CmdMachineGunFire(Vector3 rigidbodyVelocity, float launchForce, Vector3 forward, Vector3 position, Quaternion rotation)
+        {
+            GameObject newAirplaneMachineGunBullet = Instantiate(AirplaneMachineGunBullet, position, rotation) as GameObject;
+            newAirplaneMachineGunBullet.GetComponent<Rigidbody>().velocity = rigidbodyVelocity + launchForce * forward;
+            NetworkServer.Spawn(newAirplaneMachineGunBullet);
+        }
 
         public void Catapult()
         {

@@ -8,9 +8,7 @@ namespace MostDanger {
 	public class CharacterSetup : NetworkBehaviour 
 	{
 	    [Header("UI")]
-
 	    public Text m_NameText;
-	    public GameObject m_Crown;
 
 	    [Header("Network")]
 	    
@@ -27,9 +25,6 @@ namespace MostDanger {
 	    [SyncVar]
 	    public bool IsReady = false;
 
-	    //This allow to know if the crown must be displayed or not
-	    protected bool m_isLeader = false;
-
 	    public override void OnStartClient()
 	    {
 	        base.OnStartClient();
@@ -37,10 +32,10 @@ namespace MostDanger {
 	        if (!isServer) //if not hosting, we had the tank to the gamemanger for easy access!
 	            GameManager.AddTank(gameObject, PlayerNumber, Color, PlayerName);
 
-	        GameObject m_TankRenderers = transform.Find("TankRenderers").gameObject;
+	        GameObject Renderers = transform.Find("Renderers").gameObject;
 
 	        // Get all of the renderers of the tank.
-	        Renderer[] renderers = m_TankRenderers.GetComponentsInChildren<Renderer>();
+	        Renderer[] renderers = Renderers.GetComponentsInChildren<Renderer>();
 
 	        // Go through all the renderers...
 	        for (int i = 0; i < renderers.Length; i++)
@@ -49,14 +44,12 @@ namespace MostDanger {
 	            //TODOrenderers[i].material.color = Color;
 	        }
 
-	        if (m_TankRenderers)
-	            m_TankRenderers.SetActive(false);
+	        if (Renderers)
+	            Renderers.SetActive(false);
 
 	        m_NameText.text = "<color=#" + ColorUtility.ToHtmlStringRGB(Color) + ">"+PlayerName+"</color>";
             
 			gameObject.name = m_NameText.text;
-
-	        m_Crown.SetActive(false);
 	    }
 
 	    [ClientCallback]
@@ -76,27 +69,10 @@ namespace MostDanger {
 	        }*/
 	    }
 
-	    public void SetLeader(bool leader)
-	    {
-	        RpcSetLeader(leader);
-	    }
-
-	    [ClientRpc]
-	    public void RpcSetLeader(bool leader)
-	    {
-	        m_isLeader = leader;
-	    }
-
 	    [Command]
 	    public void CmdSetReady()
 	    {
 	        IsReady = true;
-	    }
-
-	    public void ActivateCrown(bool active)
-	    {//if we try to show (not hide) the crown, we only show it we are the current leader
-	        m_Crown.SetActive(active ? m_isLeader : false);
-	        m_NameText.gameObject.SetActive(active);
 	    }
 
 	    public override void OnNetworkDestroy()
