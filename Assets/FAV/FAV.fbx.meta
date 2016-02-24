@@ -1,0 +1,236 @@
+fileFormatVersion: 2
+guid: 6193d01069a450a48a2dc86dea89f504
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: Axle
+    100002: BarrelD
+    100004: ControlD
+    100006: ControlP
+    100008: csD
+    100010: csMtD
+    100012: csMtP
+    100014: csP
+    100016: DiskBrkD
+    100018: DiskBrkP
+    100020: DriveFD
+    100022: DriveFP
+    100024: DriveRD
+    100026: DriveRP
+    100028: DzAmoBox_2064
+    100030: DzAmoBox_2064.Shape
+    100032: dzfuel3_1504
+    100034: dzfuel3_1504 1
+    100036: dzfuel3_1504.Shape
+    100038: dzfuel3_1504.Shape 1
+    100040: dzrifle8_19910
+    100042: dzrifle8_19910 1
+    100044: dzrifle8_19910.Shape
+    100046: dzrifle8_19910.Shape 1
+    100048: dzwater2_1288
+    100050: dzwater2_1288 1
+    100052: dzwater2_1288 2
+    100054: dzwater2_1288.Shape
+    100056: dzwater2_1288.Shape 1
+    100058: dzwater2_1288.Shape 2
+    100060: //RootNode
+    100062: fav_316958
+    100064: fav_316958.Shape
+    100066: fav_316958.Shape_MeshPart0
+    100068: fav_316958.Shape_MeshPart1
+    100070: fav_316958.Shape_MeshPart2
+    100072: fav_316958.Shape_MeshPart3
+    100074: fav_316958.Shape_MeshPart4
+    100076: fav_316958.Shape_MeshPart5
+    100078: fav_316958.Shape_MeshPart6
+    100080: fav_316958.Shape_MeshPart7
+    100082: Gun
+    100084: GunBase
+    100086: GunPiv
+    100088: LowerBD
+    100090: LowerBP
+    100092: LowerD
+    100094: LowerP
+    100096: Piston1RD
+    100098: Piston1RP
+    100100: Piston2RD
+    100102: Piston2RP
+    100104: PistonFD
+    100106: PistonFP
+    100108: Shock1RD
+    100110: Shock1RP
+    100112: Shock2RD
+    100114: Shock2RP
+    100116: ShockFD
+    100118: ShockFP
+    100120: StearingWheel
+    100122: SwivD
+    100124: SwivP
+    100126: Truck
+    100128: UpperBD
+    100130: UpperBP
+    100132: UpperD
+    100134: UpperP
+    400000: Axle
+    400002: BarrelD
+    400004: ControlD
+    400006: ControlP
+    400008: csD
+    400010: csMtD
+    400012: csMtP
+    400014: csP
+    400016: DiskBrkD
+    400018: DiskBrkP
+    400020: DriveFD
+    400022: DriveFP
+    400024: DriveRD
+    400026: DriveRP
+    400028: DzAmoBox_2064
+    400030: DzAmoBox_2064.Shape
+    400032: dzfuel3_1504
+    400034: dzfuel3_1504 1
+    400036: dzfuel3_1504.Shape
+    400038: dzfuel3_1504.Shape 1
+    400040: dzrifle8_19910
+    400042: dzrifle8_19910 1
+    400044: dzrifle8_19910.Shape
+    400046: dzrifle8_19910.Shape 1
+    400048: dzwater2_1288
+    400050: dzwater2_1288 1
+    400052: dzwater2_1288 2
+    400054: dzwater2_1288.Shape
+    400056: dzwater2_1288.Shape 1
+    400058: dzwater2_1288.Shape 2
+    400060: //RootNode
+    400062: fav_316958
+    400064: fav_316958.Shape
+    400066: fav_316958.Shape_MeshPart0
+    400068: fav_316958.Shape_MeshPart1
+    400070: fav_316958.Shape_MeshPart2
+    400072: fav_316958.Shape_MeshPart3
+    400074: fav_316958.Shape_MeshPart4
+    400076: fav_316958.Shape_MeshPart5
+    400078: fav_316958.Shape_MeshPart6
+    400080: fav_316958.Shape_MeshPart7
+    400082: Gun
+    400084: GunBase
+    400086: GunPiv
+    400088: LowerBD
+    400090: LowerBP
+    400092: LowerD
+    400094: LowerP
+    400096: Piston1RD
+    400098: Piston1RP
+    400100: Piston2RD
+    400102: Piston2RP
+    400104: PistonFD
+    400106: PistonFP
+    400108: Shock1RD
+    400110: Shock1RP
+    400112: Shock2RD
+    400114: Shock2RP
+    400116: ShockFD
+    400118: ShockFP
+    400120: StearingWheel
+    400122: SwivD
+    400124: SwivP
+    400126: Truck
+    400128: UpperBD
+    400130: UpperBP
+    400132: UpperD
+    400134: UpperP
+    2300000: DzAmoBox_2064.Shape
+    2300002: dzfuel3_1504.Shape
+    2300004: dzfuel3_1504.Shape 1
+    2300006: dzrifle8_19910.Shape
+    2300008: dzrifle8_19910.Shape 1
+    2300010: dzwater2_1288.Shape
+    2300012: dzwater2_1288.Shape 1
+    2300014: dzwater2_1288.Shape 2
+    3300000: DzAmoBox_2064.Shape
+    3300002: dzfuel3_1504.Shape
+    3300004: dzfuel3_1504.Shape 1
+    3300006: dzrifle8_19910.Shape
+    3300008: dzrifle8_19910.Shape 1
+    3300010: dzwater2_1288.Shape
+    3300012: dzwater2_1288.Shape 1
+    3300014: dzwater2_1288.Shape 2
+    4300000: DzAmoBox_2064.Shape
+    4300002: dzrifle8_19910.Shape
+    4300004: dzrifle8_19910.Shape
+    4300006: dzfuel3_1504.Shape
+    4300008: dzfuel3_1504.Shape
+    4300010: dzwater2_1288.Shape
+    4300012: dzwater2_1288.Shape
+    4300014: dzwater2_1288.Shape
+    4300016: fav_316958.Shape_MeshPart0
+    4300018: fav_316958.Shape_MeshPart1
+    4300020: fav_316958.Shape_MeshPart2
+    4300022: fav_316958.Shape_MeshPart3
+    4300024: fav_316958.Shape_MeshPart4
+    4300026: fav_316958.Shape_MeshPart5
+    4300028: fav_316958.Shape_MeshPart6
+    4300030: fav_316958.Shape_MeshPart7
+    9500000: //RootNode
+    13700000: fav_316958.Shape_MeshPart0
+    13700002: fav_316958.Shape_MeshPart1
+    13700004: fav_316958.Shape_MeshPart2
+    13700006: fav_316958.Shape_MeshPart3
+    13700008: fav_316958.Shape_MeshPart4
+    13700010: fav_316958.Shape_MeshPart5
+    13700012: fav_316958.Shape_MeshPart6
+    13700014: fav_316958.Shape_MeshPart7
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .0500000007
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
