@@ -16,8 +16,6 @@ namespace MostDanger {
 	    public GameObject renderers;                // References to all the gameobjects that need to be disabled when the tank is dead.
 	    public GameObject m_HealthCanvas;
 	    public GameObject m_AimCanvas;
-	    public GameObject m_LeftDustTrail;
-	    public GameObject m_RightDustTrail;
 		public CharacterSetup m_Setup;
 		public CharacterManager Manager;                   //Associated manager, to disable control when dying.
 
@@ -73,8 +71,6 @@ namespace MostDanger {
 	        renderers.SetActive(active);
 	        m_HealthCanvas.SetActive(active);
 	        m_AimCanvas.SetActive(active);
-	        m_LeftDustTrail.SetActive(active);
-	        m_RightDustTrail.SetActive(active);
 
 	        if (active) Manager.EnableControl();
 	        else Manager.DisableControl();

@@ -6,16 +6,11 @@ namespace MostDanger {
     [RequireComponent(typeof(Enginery))]
 	public class TankController : NetworkBehaviour
 	{
-		private Rigidbody rigidBody;
-		private AudioSource audioSource;
+
 		private Enginery _enginery;
-
-
 
 		void Awake ()
 		{
-			rigidBody = GetComponent<Rigidbody> ();
-			audioSource = GetComponent<AudioSource> ();
 			_enginery = GetComponent<Enginery> ();
 		}
 

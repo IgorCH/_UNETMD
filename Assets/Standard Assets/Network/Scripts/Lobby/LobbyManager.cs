@@ -251,10 +251,11 @@ namespace UnityStandardAssets.Network
         //But OnLobbyClientConnect isn't called on hosting player. So we override the lobbyPlayer creation
         public override GameObject OnLobbyServerCreateLobbyPlayer(NetworkConnection conn, short playerControllerId)
         {
+            //TODO Create Selected Player Prefab
             GameObject obj = Instantiate(lobbyPlayerPrefab.gameObject) as GameObject;
 
             LobbyPlayer newPlayer = obj.GetComponent<LobbyPlayer>();
-            newPlayer.RpcToggleJoinButton(numPlayers + 1 >= minPlayer); ;
+            newPlayer.RpcToggleJoinButton(numPlayers + 1 >= minPlayer);
 
             for (int i = 0; i < numPlayers; ++i)
             {

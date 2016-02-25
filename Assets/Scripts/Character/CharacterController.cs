@@ -17,8 +17,6 @@ namespace MostDanger {
 		public AudioSource m_MovementAudio;      // Reference to the audio source used to play engine sounds. NB: different to the shooting audio source.
 	    public AudioClip m_EngineIdling;         // Audio to play when the tank isn't moving.
 	    public AudioClip m_EngineDriving;        // Audio to play when the tank is moving.
-	    public ParticleSystem m_LeftDustTrail;   // The particle system of dust that is kicked up from the left track.
-	    public ParticleSystem m_RightDustTrail;  // The particle system of dust that is kicked up from the rightt track.
 	    
         public Rigidbody Rigidbody;              // Reference used to move the tank.
 
@@ -162,7 +160,6 @@ namespace MostDanger {
 			if (CurrentWeapon)
 			{
                 CurrentWeapon.OnDeselect();
-				Destroy (CurrentWeapon);
 			}
 
 			CurrentWeapon = (Weapon)gameObject.GetComponent("MostDanger." + weapon.ScriptName);
@@ -218,22 +215,10 @@ namespace MostDanger {
 	        Rigidbody.velocity = Vector3.zero;
 	        Rigidbody.angularVelocity = Vector3.zero;
 
-            m_LeftDustTrail.Clear();
-	        m_LeftDustTrail.Stop();
-
-	        m_RightDustTrail.Clear();
-	        m_RightDustTrail.Stop();
-
 			if (CurrentWeapon)
 			{
 				CurrentWeapon.SetDefaults ();
 			}
-	    }
-
-	    public void ReEnableParticles()
-	    {
-	        m_LeftDustTrail.Play();
-	        m_RightDustTrail.Play();
 	    }
 
 	    //We freeze the rigibody when the control is disabled to avoid the tank drifting!

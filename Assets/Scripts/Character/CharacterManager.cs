@@ -64,7 +64,6 @@ namespace MostDanger {
 	    public void EnableControl()
 	    {
 			characterController.enabled = true;
-			characterController.ReEnableParticles();
 	    }
 
 	    public string GetName()

@@ -6,14 +6,11 @@ namespace MostDanger {
     [RequireComponent(typeof(Enginery))]
 	public class TruckController : NetworkBehaviour
 	{
-		private Rigidbody rigidBody;
-		private AudioSource audioSource;
+
 		private Enginery _enginery;
 
 		void Awake ()
 		{
-			rigidBody = GetComponent<Rigidbody> ();
-			audioSource = GetComponent<AudioSource> ();
 			_enginery = GetComponent<Enginery> ();
 		}
 
@@ -56,7 +53,6 @@ namespace MostDanger {
             var pilotClientConnection = pilot.GetComponent<NetworkIdentity>().connectionToClient;
             GetComponent<NetworkIdentity>().RemoveClientAuthority(pilotClientConnection);
             GetComponent<Enginery>().Pilot = null;
-
 
             pilot.gameObject.SetActive(true);
             pilot.GetComponent<Transform>().position = GetComponent<Transform>().position - new Vector3(0, 5, 0);
