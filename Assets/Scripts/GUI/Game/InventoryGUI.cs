@@ -33,7 +33,6 @@ namespace MostDanger {
 
 		public void Open (List<WeaponStruct> weapons, Action<WeaponStruct> callback)
 		{
-		    Cursor.visible = false;
             Callback = callback; 
             
             foreach (Transform child in itemsRoot)
@@ -57,7 +56,6 @@ namespace MostDanger {
 
 		public void Close ()
         {
-            Cursor.visible = true;
 			IsOpened = false;
 			InventoryRoot.SetActive(IsOpened);
 		}

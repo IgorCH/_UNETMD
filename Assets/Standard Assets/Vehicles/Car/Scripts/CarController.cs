@@ -185,6 +185,7 @@ namespace UnityStandardAssets.Vehicles.Car
                     break;
 
                 case SpeedType.KPH:
+
                     speed *= 3.6f;
                     if (speed > m_Topspeed)
                         m_Rigidbody.velocity = (m_Topspeed/3.6f) * m_Rigidbody.velocity.normalized;

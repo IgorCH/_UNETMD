@@ -8,6 +8,16 @@ namespace MostDanger {
 
 		public Vector3 CameraParams;
 
+	    public virtual void OnSelect()
+	    {
+	        
+	    }
+
+        public virtual void OnDeselect()
+        {
+
+        }
+
 		public virtual void ManualUpdate () {
 			
 		}

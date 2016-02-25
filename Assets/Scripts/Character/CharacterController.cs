@@ -78,11 +78,12 @@ namespace MostDanger {
             Weapons.Add(new WeaponStruct()
             {
                 Name = "Jetpack",
-                ScriptName = "Dynamite",
+                ScriptName = "Jetpack",
                 Count = -1
             });
 
 			CurrentWeapon = (Weapon)gameObject.GetComponent("MostDanger.Fist");
+	        CurrentWeapon.OnSelect();
 	    }
 
 	    private void Start()
@@ -160,11 +161,12 @@ namespace MostDanger {
 		{
 			if (CurrentWeapon)
 			{
+                CurrentWeapon.OnDeselect();
 				Destroy (CurrentWeapon);
 			}
 
-			//TODO Оптимизировать выбор, чтобы не нагромождать
 			CurrentWeapon = (Weapon)gameObject.GetComponent("MostDanger." + weapon.ScriptName);
+            CurrentWeapon.OnSelect();
 		}
 
 	    private void EngineAudio()
@@ -207,10 +209,6 @@ namespace MostDanger {
 
 			float turn = Input.GetAxis("Mouse X") * m_TurnSpeed * Time.deltaTime;
 			Quaternion inputRotation = Quaternion.Euler(0f, turn / 10, 0f);
-
-            //Debug.Log(Input.GetAxis("Mouse X"));
-            //Debug.Log(inputRotation); 
-            //Debug.Log(Rigidbody.rotation);
 
 			Rigidbody.MoveRotation(Rigidbody.rotation * inputRotation);
 	    }

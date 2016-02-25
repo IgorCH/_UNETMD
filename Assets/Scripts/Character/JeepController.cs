@@ -1,22 +1,27 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
+using UnityStandardAssets.Vehicles.Car;
+
 namespace MostDanger {
 
     [RequireComponent(typeof(Enginery))]
+    [RequireComponent(typeof(CameraEngineryController))]
+    [RequireComponent(typeof(CarController))]
 	public class JeepController : NetworkBehaviour
 	{
 		private Rigidbody rigidBody;
 		private AudioSource audioSource;
 		private Enginery _enginery;
+        private CarController car;
 
-
-
-		void Awake ()
+        void Awake ()
 		{
 			rigidBody = GetComponent<Rigidbody> ();
 			audioSource = GetComponent<AudioSource> ();
 			_enginery = GetComponent<Enginery> ();
+
+            car = GetComponent<CarController>();
 		}
 
 		void Update ()
@@ -31,13 +36,16 @@ namespace MostDanger {
 		void FixedUpdate ()
 		{
 
-		
 		}
 
 		void ManualUpdate ()
 		{
-			
-			
+
+            // pass the input to the car!
+            float h = Input.GetAxis("Horizontal1");
+            float v = Input.GetAxis("Vertical1");
+            float handbrake = 0;//TODO CrossPlatformInputManager.GetAxis("Jump");
+            car.Move(h, v, v, handbrake);
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
