@@ -25,7 +25,6 @@ namespace MostDanger {
 	    public Animator Animator;
 	    private Transform _transform;
 
-
         [SyncVar]
 	    private GameObject _highlightedObject;
 
