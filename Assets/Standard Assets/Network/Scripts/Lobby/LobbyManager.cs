@@ -13,6 +13,16 @@ namespace UnityStandardAssets.Network
     {
         static public LobbyManager s_Singleton;
 
+		[Space]
+		[Space]
+		[Space]
+		[Space]
+		[Space]
+		[Space]
+		[Space]
+		[Space]
+
+
         [Tooltip("The minimum number of players in the lobby before player can be ready")]
         public int minPlayer;
 

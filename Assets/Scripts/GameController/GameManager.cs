@@ -339,7 +339,6 @@ namespace MostDanger {
 	        // By default, there is no winner of the round so it's a draw.
 	        string message = "DRAW!";
 
-
 	        // If there is a game winner set the message to say which player has won the game.
 	        if (m_GameWinner != null)
 	            message = "<color=#" + ColorUtility.ToHtmlStringRGB(m_GameWinner.PlayerColor) + ">"+ m_GameWinner.PlayerName + "</color> WINS THE GAME!";
@@ -379,7 +378,7 @@ namespace MostDanger {
 	    {
 	        for (int i = 0; i < m_Tanks.Count; i++)
 	        {
-	            m_Tanks[i].EnableControl();
+	            m_Tanks[i].SetControlEnabled(true);
 	        }
 	    }
 
@@ -388,7 +387,7 @@ namespace MostDanger {
 	    {
 	        for (int i = 0; i < m_Tanks.Count; i++)
 	        {
-	            m_Tanks[i].DisableControl();
+				m_Tanks[i].SetControlEnabled(false);
 	        }
 	    }
 	}

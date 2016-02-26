@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace MostDanger {
 		
-	public class ShellExplosion : NetworkBehaviour
+	public class BazookaShell : NetworkBehaviour
 	{
 		public ParticleSystem m_ExplosionParticles;         // Reference to the particles that will play on explosion.
 		public AudioSource m_ExplosionAudio;                // Reference to the audio that will play on explosion.
@@ -14,7 +14,7 @@ namespace MostDanger {
 		public float m_ExplosionRadius = 5f;                // The maximum distance away from the explosion tanks can be and are still affected.
 
 
-		private int m_TankMask;                             // A layer mask so that only the tanks are affected by the explosion.
+		private int m_TankMask = LayerMask.GetMask("Players"); // A layer mask so that only the tanks are affected by the explosion.
 
 		private void Start()
 		{
@@ -25,9 +25,6 @@ namespace MostDanger {
 				GetComponent<Collider>().enabled = false;
 				StartCoroutine(EnableCollision());
 			}
-
-			// Set the value of the layer mask based solely on the Players layer.
-			m_TankMask = LayerMask.GetMask("Players");
 		}
 
 		//allow to delay a bit the activation of the collider so that it don't collide when spawn close to the canon
@@ -44,43 +41,29 @@ namespace MostDanger {
 			// Collect all the colliders in a sphere from the shell's current position to a radius of the explosion radius.
 			Collider[] colliders = Physics.OverlapSphere(transform.position, m_ExplosionRadius, m_TankMask);
 
-			// Go through all the colliders...
 			for (int i = 0; i < colliders.Length; i++)
 			{
-				// ... and find their rigidbody.
 				Rigidbody targetRigidbody = colliders[i].GetComponent<Rigidbody>();
 
-				// If they don't have a rigidbody, go on to the next collider.
 				if (!targetRigidbody)
 					continue;
 
-				// Find the TankHealth script associated with the rigidbody.
 				CharacterHealth targetHealth = targetRigidbody.GetComponent<CharacterHealth>();
 
-				// If there is no TankHealth script attached to the gameobject, go on to the next collider.
-				if (!targetHealth)
-					continue;
+				if (targetHealth) {
+					
+					Vector3 explosionToTarget = targetRigidbody.position - transform.position;
+					float explosionDistance = explosionToTarget.magnitude;
+					float relativeDistance = (m_ExplosionRadius - explosionDistance) / m_ExplosionRadius;
+					float damage = relativeDistance * m_MaxDamage;
+					damage = Mathf.Max (0f, damage);
 
-				// Create a vector from the shell to the target.
-				Vector3 explosionToTarget = targetRigidbody.position - transform.position;
-
-				// Calculate the distance from the shell to the target.
-				float explosionDistance = explosionToTarget.magnitude;
-
-				// Calculate the proportion of the maximum distance (the explosionRadius) the target is away.
-				float relativeDistance = (m_ExplosionRadius - explosionDistance) / m_ExplosionRadius;
-
-				// Calculate damage as this proportion of the maximum possible damage.
-				float damage = relativeDistance * m_MaxDamage;
-
-				// Make sure that the minimum damage is always 0.
-				damage = Mathf.Max(0f, damage);
-
-				// Deal this damage to the tank.
-				targetHealth.Damage(damage);
+					targetHealth.Damage (damage);
+				}
 			}
 
-			if (!NetworkClient.active)//if we are ALSO client (so hosting), this will be done by the Destroy so Skip
+			//if we are ALSO client (so hosting), this will be done by the Destroy so Skip
+			if (!NetworkClient.active)
 				PhysicForces();
 
 			// Destroy the shell on clients.
@@ -90,46 +73,30 @@ namespace MostDanger {
 		//called on client when the Network destroy that object (it was destroyed on server)
 		public override void OnNetworkDestroy()
 		{
-
 			//we spawn the explosion particle
-			ExplodeShell();
+			m_ExplosionParticles.transform.parent = null;
+			m_ExplosionParticles.Play();
+			m_ExplosionAudio.Play();
+
+			PhysicForces();
+
 			//set the particle to be destroyed at the end of their lifetime
 			Destroy(m_ExplosionParticles.gameObject, m_ExplosionParticles.duration);
 			base.OnNetworkDestroy();
 		}
 
-		void ExplodeShell()
-		{
-			// Unparent the particles from the shell.
-			m_ExplosionParticles.transform.parent = null;
-
-			// Play the particle system.
-			m_ExplosionParticles.Play();
-
-			// Play the explosion sound effect.
-			m_ExplosionAudio.Play();
-
-			PhysicForces();
-		}
-
-
 		//This apply force on object. Do that on all clients & server as each must apply force to object they own
 		void PhysicForces()
 		{
-			// Collect all the colliders in a sphere from the shell's current position to a radius of the explosion radius.
 			Collider[] colliders = Physics.OverlapSphere(transform.position, m_ExplosionRadius, m_TankMask);
 
-			// Go through all the colliders...
 			for (int i = 0; i < colliders.Length; i++)
 			{
-				// ... and find their rigidbody.
 				Rigidbody targetRigidbody = colliders[i].GetComponent<Rigidbody>();
 
-				// If they don't have a rigidbody or we don't own that object, go on to the next collider.
 				if (!targetRigidbody || !targetRigidbody.GetComponent<NetworkIdentity>().hasAuthority)
 					continue;
 
-				// Add an explosion force with no vertical bias.
 				targetRigidbody.AddExplosionForce(m_ExplosionForce, transform.position, m_ExplosionRadius);
 			}
 		}

@@ -55,17 +55,11 @@ namespace MostDanger {
 	    }
 
 	    // Used during the phases of the game where the player shouldn't be able to control their tank.
-	    public void DisableControl()
+	    public void SetControlEnabled(bool enabled)
 	    {
-			characterController.enabled = false;
+			characterController.enabled = enabled;
 	    }
-
-	    // Used during the phases of the game where the player should be able to control their tank.
-	    public void EnableControl()
-	    {
-			characterController.enabled = true;
-	    }
-
+			
 	    public string GetName()
 	    {
 	        return characterSetup.PlayerName;

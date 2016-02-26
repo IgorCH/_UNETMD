@@ -7,8 +7,6 @@ namespace MostDanger {
 	//Purpose of that class is syncing data between server - client
 	public class CharacterSetup : NetworkBehaviour 
 	{
-	    [Header("UI")]
-	    public Text m_NameText;
 
 	    [Header("Network")]
 	    
@@ -47,9 +45,8 @@ namespace MostDanger {
 	        if (Renderers)
 	            Renderers.SetActive(false);
 
-	        m_NameText.text = "<color=#" + ColorUtility.ToHtmlStringRGB(Color) + ">"+PlayerName+"</color>";
-            
-			gameObject.name = m_NameText.text;
+	       
+			gameObject.name = PlayerName;
 	    }
 
 	    [ClientCallback]
