@@ -16,12 +16,15 @@ namespace MostDanger {
 	    public int NumRoundsToWin = 5;          // The number of rounds a single player has to win to win the game.
 	    public float StartDelay = 3f;           // The delay between the start of RoundStarting and RoundPlaying phases.
 	    public float EndDelay = 3f;             // The delay between the end of RoundPlaying and RoundEnding phases.
-	    public Text m_MessageText;                // Reference to the overlay Text to display winning text, etc.
+	    public Text m_MessageText;              // Reference to the overlay Text to display winning text, etc.
 	    
-		//public GameObject GnomePrefab;           // Reference to the prefab the players will control.
-		//public GameObject GoblinPrefab;           // Reference to the prefab the players will control.
+		//public GameObject GnomePrefab;        // Reference to the prefab the players will control.
+		//public GameObject GoblinPrefab;       // Reference to the prefab the players will control.
 
-	    public Transform[] m_SpawnPoint;
+		public GameObject CartoonLevel;
+		public GameObject FootholdLevel;
+
+	    private GameObject[] SpawnPoints;
 
 	    [HideInInspector]
 	    [SyncVar]
@@ -51,13 +54,24 @@ namespace MostDanger {
 	        _startWait = new WaitForSeconds(StartDelay);
 	        _endWait = new WaitForSeconds(EndDelay);
 
+			//TODO ALARM
+			//var level = Instantiate (CartoonLevel);
+			//NetworkServer.Spawn (level);
+			//SpawnPoints = 
 
-			//TODO ALARM Грузим выбранную карту/ нужно синхронизовать загрузку
-			//Создать массив SpawnPoints
+
+			RpcPrepareClients ();
 
 	        // Once the tanks have been created and the camera is using them as targets, start the game.
 	        StartCoroutine(GameLoop());
 	    }
+
+		[ClientRpc]
+		public void RpcPrepareClients() 
+		{
+			Debug.Log(GameObject.FindGameObjectsWithTag("SpawnPoint"));
+			SpawnPoints = GameObject.FindGameObjectsWithTag ("SpawnPoint");
+		}
 
 	    /// <summary>
 	    /// Add a character from the lobby hook
@@ -97,7 +111,7 @@ namespace MostDanger {
 	    // This is called from start and will run each phase of the game one after another. ONLY ON SERVER (as Start is only called on server)
 	    private IEnumerator GameLoop()
 	    {
-			//TODO
+			//TODO Более продвинутый поиск конца игры
 	        //while (m_Tanks.Count < 2)
 	        //    yield return null;
 
@@ -309,19 +323,12 @@ namespace MostDanger {
 	    // This function is to find out if there is a winner of the game.
 		private CharacterManager GetGameWinner()
 	    {
-	        int maxScore = 0;
 
 	        // Go through all the tanks...
 	        for (int i = 0; i < Characters.Count; i++)
 	        {
-	            if(Characters[i].m_Wins > maxScore)
-	            {
-	                maxScore = Characters[i].m_Wins;
-	            }
-
-	            // ... and if one of them has enough rounds to win the game, return it.
-	            if (Characters[i].m_Wins == NumRoundsToWin)
-	                return Characters[i];
+				if (Characters[i].m_Wins == NumRoundsToWin)
+					return Characters[i];
 	        }
 
 	        // If no tanks have enough rounds to win, return null.
@@ -362,7 +369,7 @@ namespace MostDanger {
 	    {
 	        for (int i = 0; i < Characters.Count; i++)
 	        {
-	            Characters[i].spawnPoint = m_SpawnPoint[Characters[i].characterSetup.PlayerNumber];
+				Characters[i].spawnPoint = SpawnPoints[Characters[i].characterSetup.PlayerNumber].GetComponent<Transform>();
 	            Characters[i].Reset();
 	        }
 	    }

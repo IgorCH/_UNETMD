@@ -1,10 +1,15 @@
 fileFormatVersion: 2
 guid: 54a000792783c934885973b761b3f96f
-timeCreated: 1432730268
-licenseType: Store
+timeCreated: 1457001862
+licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - m_MessageText: {instanceID: 0}
+  - CartoonLevel: {fileID: 171356, guid: 1cd1bdb2203012a40ab12a0d2fd7aa88, type: 2}
+  - FootholdLevel: {fileID: 177490, guid: b4ed85822c4c3453badf169238f899f6, type: 2}
+  - m_FadingScreen: {instanceID: 0}
+  - m_EndRoundScreen: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
