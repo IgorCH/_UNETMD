@@ -14,18 +14,17 @@ namespace MostDanger {
         private const float JetpackAngleChangeSpeed = 6;
         #endregion
 
-        private Rigidbody _rigidbody;
 	    public GameObject JetpackGO;
         public GameObject JetpackParticlesLeft;
         public GameObject JetpackParticlesRight;
 
-	    public float MaxFuel = 100f;
-	    private float CurrentFuel = 100f;
-	    private float FuelUseSpeed = 10f;
+	    //public float MaxFuel = 100f;
+	    //private float CurrentFuel = 100f;
+	    //private float FuelUseSpeed = 10f;
 
-        private void Awake()
+		public new void Awake()
         {
-            _rigidbody = GetComponent<Rigidbody>();
+			base.Awake ();
         }
 
         private void Start()
@@ -53,7 +52,7 @@ namespace MostDanger {
 
             if (Input.GetMouseButton(0))
             {
-                _rigidbody.AddRelativeForce(0, 100000, 10000 * 60 * Time.deltaTime, ForceMode.Force);
+                __rigidbody.AddRelativeForce(0, 100000, 10000 * 60 * Time.deltaTime, ForceMode.Force);
             }
 
             if (Input.GetMouseButtonUp(0))

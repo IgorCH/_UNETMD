@@ -55,10 +55,10 @@ namespace MostDanger {
 	    {
 	        m_ExplosionParticles.Play();
 	        AudioSource.PlayClipAtPoint(m_TankExplosion, transform.position);
-            SetTankActive(false);
+            SetCharacterActive(false);
 	    }
 
-	    private void SetTankActive(bool active)
+	    private void SetCharacterActive(bool active)
 	    {
 	        _collider.enabled = active;
 	        renderers.SetActive(active);
@@ -69,7 +69,7 @@ namespace MostDanger {
 	    {
 	        _currentHealth = StartingHealth;
 	        _isZeroHealthHappened = false;
-	        SetTankActive(true);
+	        SetCharacterActive(true);
 	    }
 	}
 

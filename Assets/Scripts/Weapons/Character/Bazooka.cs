@@ -8,7 +8,6 @@ namespace MostDanger {
 	
 	public class Bazooka : Weapon {
 
-
 		public Rigidbody Shell;
 		public Transform m_FireTransform;         // A child of the tank where the shells are spawned.
 
@@ -27,7 +26,7 @@ namespace MostDanger {
 		private float _chargeSpeed;            // How fast the launch force increases, based on the max charge time.
 		private bool _fired;                   // Whether or not the shell has been launched with this button press.
 
-		private void Awake()
+		public new void Awake()
 		{
 			base.Awake ();
 		}

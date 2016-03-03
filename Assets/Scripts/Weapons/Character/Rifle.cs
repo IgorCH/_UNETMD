@@ -6,9 +6,9 @@ namespace MostDanger {
 	
 	public class Rifle : Weapon {
 
-        private void Awake()
+		public new void Awake()
         {
-
+			base.Awake();
         }
 
         private void Start()

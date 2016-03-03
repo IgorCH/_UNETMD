@@ -29,7 +29,7 @@ namespace MostDanger {
 
 		private GrenadeShell currentGrenade;
 
-		private void Awake()
+		public new void Awake()
 		{
 			base.Awake ();
 		}

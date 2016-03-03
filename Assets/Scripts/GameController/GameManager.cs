@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections.Generic;
-using UnityStandardAssets.Network;
 
 namespace MostDanger {
 
@@ -12,31 +11,32 @@ namespace MostDanger {
 	    static public GameManager Instance;
 
 	    //this is static so tank can be added even withotu the scene loaded (i.e. from lobby)
-		static public List<CharacterManager> m_Tanks = new List<CharacterManager>();             // A collection of managers for enabling and disabling different aspects of the tanks.
+		static public List<CharacterManager> Characters = new List<CharacterManager>();             // A collection of managers for enabling and disabling different aspects of the tanks.
 
-	    public int m_NumRoundsToWin = 5;          // The number of rounds a single player has to win to win the game.
-	    public float m_StartDelay = 3f;           // The delay between the start of RoundStarting and RoundPlaying phases.
-	    public float m_EndDelay = 3f;             // The delay between the end of RoundPlaying and RoundEnding phases.
+	    public int NumRoundsToWin = 5;          // The number of rounds a single player has to win to win the game.
+	    public float StartDelay = 3f;           // The delay between the start of RoundStarting and RoundPlaying phases.
+	    public float EndDelay = 3f;             // The delay between the end of RoundPlaying and RoundEnding phases.
 	    public Text m_MessageText;                // Reference to the overlay Text to display winning text, etc.
-	    public GameObject m_TankPrefab;           // Reference to the prefab the players will control.
+	    
+		//public GameObject GnomePrefab;           // Reference to the prefab the players will control.
+		//public GameObject GoblinPrefab;           // Reference to the prefab the players will control.
 
 	    public Transform[] m_SpawnPoint;
 
 	    [HideInInspector]
 	    [SyncVar]
-	    public bool m_GameIsFinished = false;
+	    public bool _isGameFinished = false;
 
-	    //Various UI references to hide the screen between rounds.
 	    [Space]
 	    [Header("UI")]
 	    public CanvasGroup m_FadingScreen;  
 	    public CanvasGroup m_EndRoundScreen;
 
-	    private int m_RoundNumber;                  // Which round the game is currently on.
-	    private WaitForSeconds m_StartWait;         // Used to have a delay whilst the round starts.
-	    private WaitForSeconds m_EndWait;           // Used to have a delay whilst the round or game ends.
-		private CharacterManager m_RoundWinner;          // Reference to the winner of the current round.  Used to make an announcement of who won.
-		private CharacterManager m_GameWinner;           // Reference to the winner of the game.  Used to make an announcement of who won.
+	    private int _roundNumber;                  // Which round the game is currently on.
+		private WaitForSeconds _startWait;         // Used to have a delay whilst the round starts.
+		private WaitForSeconds _endWait;           // Used to have a delay whilst the round or game ends.
+		private CharacterManager _roundWinner;     // Reference to the winner of the current round.  Used to make an announcement of who won.
+		private CharacterManager _gameWinner;      // Reference to the winner of the game.  Used to make an announcement of who won.
 
 	    void Awake()
 	    {
@@ -46,40 +46,44 @@ namespace MostDanger {
 	    [ServerCallback]
 	    private void Start()
 	    {
+			
 	        // Create the delays so they only have to be made once.
-	        m_StartWait = new WaitForSeconds(m_StartDelay);
-	        m_EndWait = new WaitForSeconds(m_EndDelay);
+	        _startWait = new WaitForSeconds(StartDelay);
+	        _endWait = new WaitForSeconds(EndDelay);
+
+
+			//TODO ALARM Грузим выбранную карту/ нужно синхронизовать загрузку
+			//Создать массив SpawnPoints
 
 	        // Once the tanks have been created and the camera is using them as targets, start the game.
 	        StartCoroutine(GameLoop());
 	    }
 
 	    /// <summary>
-	    /// Add a tank from the lobby hook
+	    /// Add a character from the lobby hook
 	    /// </summary>
 	    /// <param name="tank">The actual GameObject instantiated by the lobby, which is a NetworkBehaviour</param>
 	    /// <param name="playerNum">The number of the player (based on their slot position in the lobby)</param>
 	    /// <param name="c">The color of the player, choosen in the lobby</param>
 	    /// <param name="name">The name of the Player, choosen in the lobby</param>
-	    /// <param name="localID">The localID. e.g. if 2 player are on the same machine this will be 1 & 2</param>
-	    static public void AddTank(GameObject tank, int playerNum, Color c, string name)
+	    static public void AddCharacter(GameObject character, int playerNum, Color c, string name)
 	    {
 			CharacterManager tmp = new CharacterManager();
-	        tmp.Instance = tank;
+	        tmp.Instance = character;
 	        tmp.PlayerNumber = playerNum;
 	        tmp.PlayerColor = c;
 	        tmp.PlayerName = name;
 	        tmp.Setup();
 
-	        m_Tanks.Add(tmp);
+	        Characters.Add(tmp);
 	    }
 
-	    public void RemoveTank(GameObject tank)
+	    public void RemoveCharacter(GameObject character)
 	    {
 			CharacterManager toRemove = null;
-	        foreach (var tmp in m_Tanks)
+	        foreach (var tmp in Characters)
 	        {
-	            if (tmp.Instance == tank)
+	            if (tmp.Instance == character)
 	            {
 	                toRemove = tmp;
 	                break;
@@ -87,7 +91,7 @@ namespace MostDanger {
 	        }
 
 	        if (toRemove != null)
-	            m_Tanks.Remove(toRemove);
+	            Characters.Remove(toRemove);
 	    }
 
 	    // This is called from start and will run each phase of the game one after another. ONLY ON SERVER (as Start is only called on server)
@@ -110,9 +114,10 @@ namespace MostDanger {
 	        yield return StartCoroutine(RoundEnding());
 
 	        // This code is not run until 'RoundEnding' has finished.  At which point, check if there is a winner of the game.
-	        if (m_GameWinner != null)
-	        {// If there is a game winner, wait for certain amount or all player confirmed to start a game again
-	            m_GameIsFinished = true;
+	        if (_gameWinner != null)
+	        {
+				// If there is a game winner, wait for certain amount or all player confirmed to start a game again
+	            _isGameFinished = true;
 	            float leftWaitTime = 15.0f;
 	            bool allAreReady = false;
 	            int flooredWaitTime = 15;
@@ -122,7 +127,7 @@ namespace MostDanger {
 	                yield return null;
 
 	                allAreReady = true;
-	                foreach (var tmp in m_Tanks)
+	                foreach (var tmp in Characters)
 	                {
 	                    allAreReady &= tmp.IsReady();
 	                }
@@ -139,7 +144,7 @@ namespace MostDanger {
 	                }
 	            }
 
-	            LobbyManager.s_Singleton.ServerReturnToLobby();
+	            LobbyManager.Singleton.ServerReturnToLobby();
 	        }
 	        else
 	        {
@@ -156,23 +161,16 @@ namespace MostDanger {
 	        RpcRoundStarting();
 
 	        // Wait for the specified length of time until yielding control back to the game loop.
-	        yield return m_StartWait;
+	        yield return _startWait;
 	    }
 
 	    [ClientRpc]
 	    void RpcRoundStarting()
 	    {
-	        // As soon as the round starts reset the tanks and make sure they can't move.
-	        ResetAllTanks();
-	        DisableTankControl();
-
-	        // Snap the camera's zoom and position to something appropriate for the reset tanks.
-	        //m_CameraControl.SetAppropriatePositionAndSize();
-
-	        // Increment the round number and display text showing the players what round it is.
-	        m_RoundNumber++;
-	        m_MessageText.text = "ROUND " + m_RoundNumber;
-
+	        ResetAllCharacters();
+			SetControlEnabled(false);
+			_roundNumber++;
+	        m_MessageText.text = "ROUND " + _roundNumber;
 
 	        StartCoroutine(ClientRoundStartingFade());
 	    }
@@ -180,13 +178,13 @@ namespace MostDanger {
 	    private IEnumerator ClientRoundStartingFade()
 	    {
 	        float elapsedTime = 0.0f;
-	        float wait = m_StartDelay - 0.5f;
+	        float wait = StartDelay - 0.5f;
 
 	        yield return null;
 
 	        while (elapsedTime < wait)
 	        {
-	            if(m_RoundNumber == 1)
+	            if(_roundNumber == 1)
 	                m_FadingScreen.alpha = 1.0f - (elapsedTime / wait);
 	            else
 	                m_EndRoundScreen.alpha = 1.0f - (elapsedTime / wait);
@@ -195,7 +193,7 @@ namespace MostDanger {
 
 	            //sometime, synchronization lag behind because of packet drop, so we make sure our tank are reseted
 	            if (elapsedTime / wait < 0.5f)
-	                ResetAllTanks();
+	                ResetAllCharacters();
 
 	            yield return null;
 	        }
@@ -218,7 +216,7 @@ namespace MostDanger {
 	    void RpcRoundPlaying()
 	    {
 	        // As soon as the round begins playing let the players control the tanks.
-	        EnableTankControl();
+			SetControlEnabled(true);
 
 	        // Clear the text from the screen.
 	        m_MessageText.text = string.Empty;
@@ -227,17 +225,17 @@ namespace MostDanger {
 	    private IEnumerator RoundEnding()
 	    {
 	        // Clear the winner from the previous round.
-	        m_RoundWinner = null;
+	        _roundWinner = null;
 
 	        // See if there is a winner now the round is over.
-	        m_RoundWinner = GetRoundWinner();
+	        _roundWinner = GetRoundWinner();
 
 	        // If there is a winner, increment their score.
-	        if (m_RoundWinner != null)
-	            m_RoundWinner.m_Wins++;
+	        if (_roundWinner != null)
+	            _roundWinner.m_Wins++;
 
 	        // Now the winner's score has been incremented, see if someone has one the game.
-	        m_GameWinner = GetGameWinner();
+	        _gameWinner = GetGameWinner();
 
 	        RpcUpdateMessage(EndMessage(0));
 
@@ -245,13 +243,13 @@ namespace MostDanger {
 	        RpcRoundEnding();
 
 	        // Wait for the specified length of time until yielding control back to the game loop.
-	        yield return m_EndWait;
+	        yield return _endWait;
 	    }
 
 	    [ClientRpc]
 	    private void RpcRoundEnding()
 	    {
-	        DisableTankControl();
+			SetControlEnabled(false);
 	        StartCoroutine(ClientRoundEndingFade());
 	    }
 
@@ -264,7 +262,7 @@ namespace MostDanger {
 	    private IEnumerator ClientRoundEndingFade()
 	    {
 	        float elapsedTime = 0.0f;
-	        float wait = m_EndDelay;
+	        float wait = EndDelay;
 	        while (elapsedTime < wait)
 	        {
 	            m_EndRoundScreen.alpha = (elapsedTime / wait);
@@ -275,40 +273,38 @@ namespace MostDanger {
 	    }
 
 	    // This is used to check if there is one or fewer tanks remaining and thus the round should end.
-	    private bool OneTankLeft()
+	    private bool OneCharacterLeft()
 	    {
 	        // Start the count of tanks left at zero.
-	        int numTanksLeft = 0;
+			int numCharactersLeft = 0;
 
 	        // Go through all the tanks...
-	        for (int i = 0; i < m_Tanks.Count; i++)
+	        for (int i = 0; i < Characters.Count; i++)
 	        {
 	            // ... and if they are active, increment the counter.
-	            if (m_Tanks[i].renderers.activeSelf)
-	                numTanksLeft++;
+	            if (Characters[i].renderers.activeSelf)
+	                numCharactersLeft++;
 	        }
 
 	        // If there are one or fewer tanks remaining return true, otherwise return false.
-	        return numTanksLeft <= 1;
+	        return numCharactersLeft <= 1;
 	    }
-
 
 	    // This function is to find out if there is a winner of the round.
 	    // This function is called with the assumption that 1 or fewer tanks are currently active.
 		private CharacterManager GetRoundWinner()
 	    {
 	        // Go through all the tanks...
-	        for (int i = 0; i < m_Tanks.Count; i++)
+	        for (int i = 0; i < Characters.Count; i++)
 	        {
 	            // ... and if one of them is active, it is the winner so return it.
-	            if (m_Tanks[i].renderers.activeSelf)
-	                return m_Tanks[i];
+	            if (Characters[i].renderers.activeSelf)
+	                return Characters[i];
 	        }
 
 	        // If none of the tanks are active it is a draw so return null.
 	        return null;
 	    }
-
 
 	    // This function is to find out if there is a winner of the game.
 		private CharacterManager GetGameWinner()
@@ -316,23 +312,22 @@ namespace MostDanger {
 	        int maxScore = 0;
 
 	        // Go through all the tanks...
-	        for (int i = 0; i < m_Tanks.Count; i++)
+	        for (int i = 0; i < Characters.Count; i++)
 	        {
-	            if(m_Tanks[i].m_Wins > maxScore)
+	            if(Characters[i].m_Wins > maxScore)
 	            {
-	                maxScore = m_Tanks[i].m_Wins;
+	                maxScore = Characters[i].m_Wins;
 	            }
 
 	            // ... and if one of them has enough rounds to win the game, return it.
-	            if (m_Tanks[i].m_Wins == m_NumRoundsToWin)
-	                return m_Tanks[i];
+	            if (Characters[i].m_Wins == NumRoundsToWin)
+	                return Characters[i];
 	        }
 
 	        // If no tanks have enough rounds to win, return null.
 	        return null;
 	    }
-
-
+			
 	    // Returns a string of each player's score in their tank's color.
 	    private string EndMessage(int waitTime)
 	    {
@@ -340,56 +335,46 @@ namespace MostDanger {
 	        string message = "DRAW!";
 
 	        // If there is a game winner set the message to say which player has won the game.
-	        if (m_GameWinner != null)
-	            message = "<color=#" + ColorUtility.ToHtmlStringRGB(m_GameWinner.PlayerColor) + ">"+ m_GameWinner.PlayerName + "</color> WINS THE GAME!";
+	        if (_gameWinner != null)
+	            message = "<color=#" + ColorUtility.ToHtmlStringRGB(_gameWinner.PlayerColor) + ">"+ _gameWinner.PlayerName + "</color> WINS THE GAME!";
 	        // If there is a winner, change the message to display 'PLAYER #' in their color and a winning message.
-	        else if (m_RoundWinner != null)
-	            message = "<color=#" + ColorUtility.ToHtmlStringRGB(m_RoundWinner.PlayerColor) + ">" + m_RoundWinner.PlayerName + "</color> WINS THE ROUND!";
+	        else if (_roundWinner != null)
+	            message = "<color=#" + ColorUtility.ToHtmlStringRGB(_roundWinner.PlayerColor) + ">" + _roundWinner.PlayerName + "</color> WINS THE ROUND!";
 
 	        // After either the message of a draw or a winner, add some space before the leader board.
 	        message += "\n\n";
 
 	        // Go through all the tanks and display their scores with their 'PLAYER #' in their color.
-	        for (int i = 0; i < m_Tanks.Count; i++)
+	        for (int i = 0; i < Characters.Count; i++)
 	        {
-	            message += "<color=#" + ColorUtility.ToHtmlStringRGB(m_Tanks[i].PlayerColor) + ">" + m_Tanks[i].PlayerName + "</color>: " + m_Tanks[i].m_Wins + " WINS " 
-	                + (m_Tanks[i].IsReady()? "<size=15>READY</size>" : "") + " \n";
+	            message += "<color=#" + ColorUtility.ToHtmlStringRGB(Characters[i].PlayerColor) + ">" + Characters[i].PlayerName + "</color>: " + Characters[i].m_Wins + " WINS " 
+	                + (Characters[i].IsReady()? "<size=15>READY</size>" : "") + " \n";
 	        }
 
-	        if (m_GameWinner != null)
+	        if (_gameWinner != null)
 	            message += "\n\n<size=20 > Return to lobby in " + waitTime + "\nPress Fire to get ready</size>";
 
 	        return message;
 	    }
-
-
+			
 	    // This function is used to turn all the tanks back on and reset their positions and properties.
-	    private void ResetAllTanks()
+	    private void ResetAllCharacters()
 	    {
-	        for (int i = 0; i < m_Tanks.Count; i++)
+	        for (int i = 0; i < Characters.Count; i++)
 	        {
-	            m_Tanks[i].spawnPoint = m_SpawnPoint[m_Tanks[i].characterSetup.PlayerNumber];
-	            m_Tanks[i].Reset();
+	            Characters[i].spawnPoint = m_SpawnPoint[Characters[i].characterSetup.PlayerNumber];
+	            Characters[i].Reset();
 	        }
 	    }
 
-
-	    private void EnableTankControl()
+		private void SetControlEnabled(bool value)
 	    {
-	        for (int i = 0; i < m_Tanks.Count; i++)
+	        for (int i = 0; i < Characters.Count; i++)
 	        {
-	            m_Tanks[i].SetControlEnabled(true);
+	            Characters[i].SetControlEnabled(value);
 	        }
 	    }
 
-
-	    private void DisableTankControl()
-	    {
-	        for (int i = 0; i < m_Tanks.Count; i++)
-	        {
-				m_Tanks[i].SetControlEnabled(false);
-	        }
-	    }
 	}
 
 }

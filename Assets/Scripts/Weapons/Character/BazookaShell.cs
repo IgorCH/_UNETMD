@@ -14,7 +14,7 @@ namespace MostDanger {
 		public float m_ExplosionRadius = 5f;                // The maximum distance away from the explosion tanks can be and are still affected.
 
 
-		private int m_TankMask = LayerMask.GetMask("Players"); // A layer mask so that only the tanks are affected by the explosion.
+		private int CharactersMask = LayerMask.GetMask("Players"); // A layer mask so that only the tanks are affected by the explosion.
 
 		private void Start()
 		{
@@ -39,7 +39,7 @@ namespace MostDanger {
 		private void OnTriggerEnter(Collider other)
 		{
 			// Collect all the colliders in a sphere from the shell's current position to a radius of the explosion radius.
-			Collider[] colliders = Physics.OverlapSphere(transform.position, m_ExplosionRadius, m_TankMask);
+			Collider[] colliders = Physics.OverlapSphere(transform.position, m_ExplosionRadius, CharactersMask);
 
 			for (int i = 0; i < colliders.Length; i++)
 			{
@@ -88,7 +88,7 @@ namespace MostDanger {
 		//This apply force on object. Do that on all clients & server as each must apply force to object they own
 		void PhysicForces()
 		{
-			Collider[] colliders = Physics.OverlapSphere(transform.position, m_ExplosionRadius, m_TankMask);
+			Collider[] colliders = Physics.OverlapSphere(transform.position, m_ExplosionRadius, CharactersMask);
 
 			for (int i = 0; i < colliders.Length; i++)
 			{
