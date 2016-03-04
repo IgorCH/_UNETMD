@@ -28,7 +28,7 @@ namespace MostDanger {
 	        base.OnStartClient();
 
 	        if (!isServer) //if not hosting, we had the tank to the gamemanger for easy access!
-	            GameManager.AddTank(gameObject, PlayerNumber, Color, PlayerName);
+	            GameManager.AddCharacter(gameObject, PlayerNumber, Color, PlayerName);
 
 	        GameObject Renderers = transform.Find("Renderers").gameObject;
 
@@ -74,7 +74,7 @@ namespace MostDanger {
 
 	    public override void OnNetworkDestroy()
 	    {
-	        GameManager.Instance.RemoveTank(gameObject);
+	        GameManager.Instance.RemoveCharacter(gameObject);
 	    }
 	}
 

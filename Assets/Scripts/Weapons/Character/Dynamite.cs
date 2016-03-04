@@ -11,7 +11,7 @@ namespace MostDanger
 
 		public GameObject DynamiteShellPrefab;
 
-        private void Awake()
+        public new void Awake()
         {
 			base.Awake (); 
         }

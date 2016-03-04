@@ -17,7 +17,7 @@ namespace MostDanger
 		public ParticleSystem ExplosionParticles;         // Reference to the particles that will play on explosion.
 		public AudioSource ExplosionAudio;                // Reference to the audio that will play on explosion.
 
-		private int m_TankMask = LayerMask.GetMask("Players"); // A layer mask so that only the tanks are affected by the explosion.
+		private int CharactersMask = LayerMask.GetMask("Players"); // A layer mask so that only the tanks are affected by the explosion.
 
 		private float _timer = 5f;
 
@@ -58,7 +58,7 @@ namespace MostDanger
 
 		void PhysicForces()
 		{
-			Collider[] colliders = Physics.OverlapSphere(transform.position, ExplosionRadius, m_TankMask);
+			Collider[] colliders = Physics.OverlapSphere(transform.position, ExplosionRadius, CharactersMask);
 
 			for (int i = 0; i < colliders.Length; i++)
 			{
