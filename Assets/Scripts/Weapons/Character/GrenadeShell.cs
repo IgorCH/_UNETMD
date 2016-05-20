@@ -14,10 +14,11 @@ namespace MostDanger {
 		public float m_ExplosionRadius = 5f;                // The maximum distance away from the explosion tanks can be and are still affected.
 
 
-		private int CharactersMask = LayerMask.GetMask("Players"); // A layer mask so that only the tanks are affected by the explosion.
+		private int CharactersMask;
 
 		private void Start()
 		{
+			CharactersMask = LayerMask.GetMask("Players");
 			if (isServer)
 			{
 				// If it isn't destroyed by then, destroy the shell after it's lifetime.

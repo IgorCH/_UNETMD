@@ -17,14 +17,14 @@ namespace MostDanger
 		public ParticleSystem ExplosionParticles;         // Reference to the particles that will play on explosion.
 		public AudioSource ExplosionAudio;                // Reference to the audio that will play on explosion.
 
-		private int CharactersMask = LayerMask.GetMask("Players"); // A layer mask so that only the tanks are affected by the explosion.
+		private int CharactersMask; // A layer mask so that only the tanks are affected by the explosion.
 
 		private float _timer = 5f;
 
 
         private void Awake()
         {
-
+            CharactersMask = LayerMask.GetMask("Players");
         }
 
 		private void Start()

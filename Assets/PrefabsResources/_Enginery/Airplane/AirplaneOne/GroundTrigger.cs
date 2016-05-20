@@ -5,11 +5,13 @@ public class GroundTrigger : MonoBehaviour {
 
     public bool IsTriggered = false;
 
-    void OnTriggerEnter  (Collider other) {
+    void OnTriggerEnter(Collider other)
+    {
         IsTriggered = true;
     }
 
-    void OnTriggerExit  (Collider other) {
+    void OnTriggerExit(Collider other)
+    {
         IsTriggered = false;
     }
 
