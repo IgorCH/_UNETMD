@@ -1,4 +1,69 @@
-﻿using System.Collections;
+﻿/*
+ * Single
+ * 	Campaign
+ *   Gnomes
+ * 		New
+ * 		Resume
+ *   Goblins
+ * 		New
+ * 		Resume
+ *  Scenary
+ * 		List
+ *      (Карта -> Кол-во Команд -> Выбор стороны -> Заполнение остальных сторон ботами -> Ready(Ник Команда Цвет))
+ * 		Бот слабый средний сильный
+ * 		PlayBtn
+ * 
+ * 
+ * Multiplayer
+ * (Карта -> Кол-во Команд -> Выбор стороны -> Заполнение остальных сторон ботами -> Ready(Ник Команда Цвет))
+ * 	LAN
+ *  Internet
+ * 
+ * MyTeam
+ * Options
+ * Quit
+ * 
+ * Динамическая загрузка карты и контроллера
+ * 
+ * Добавление ботов в лобби
+ * 
+ * Кампании играешь одной командой.
+ * Все остальное другой
+ *  
+ * Загрузка выбранной карты на старте
+ * Сформировать список SpawnPoint и другие параметры карты
+ * 	
+ * Создание различных PlayerPrefab для выбранного игрока
+ *   
+ * Нужно ввести понятие команды
+ * Нужно уметь получить победителя
+ *  
+ * При создании игры выбираем карту
+ * Выбираем команды
+ *  
+ * Надо уметь слушать конец хода (по времени или по атаке)
+ * Надо уметь слушать смерти и подводить итоги
+ *  
+ * Надо уметь создавать игровые события
+ *  
+ * Логика
+ * CharacterLobbyHook.OnLobbyServer SceneLoadedForPlayer
+ * событие после загрузки карты у игрока. В этот момент создается персонаж GameManager.AddTank
+ *
+ * План
+ * 1. наладить инвентарь, сделать четким
+ * 2. потом добавить динамит, гранату, винтовку персонажу
+ * 3. потом джет пак и парашут
+ * 4. hp, reborn
+ * 5. наладить систему выделения техники (выделять допустим стрелочкой сверху)
+ * 6. потом можно и танк добавить
+ * 7. синхронизация всех машин
+ * 8. потом горячие клавиши в инвентаре
+ * 9. потом туррели с AI
+ * 10. собрать полноценную карту
+ */
+
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
@@ -49,17 +114,15 @@ namespace MostDanger {
 	    [ServerCallback]
 	    private void Start()
 	    {
-			
 	        // Create the delays so they only have to be made once.
 	        _startWait = new WaitForSeconds(StartDelay);
 	        _endWait = new WaitForSeconds(EndDelay);
 
 			//TODO ALARM
-			//var level = Instantiate (CartoonLevel);
-			//NetworkServer.Spawn (level);
+			var level = Instantiate (FootholdLevel);
+			NetworkServer.Spawn (level);
 			//SpawnPoints = 
-
-
+	
 			RpcPrepareClients ();
 
 	        // Once the tanks have been created and the camera is using them as targets, start the game.
@@ -69,7 +132,7 @@ namespace MostDanger {
 		[ClientRpc]
 		public void RpcPrepareClients() 
 		{
-			Debug.Log(GameObject.FindGameObjectsWithTag("SpawnPoint"));
+			//Debug.Log(GameObject.FindGameObjectsWithTag("SpawnPoint"));
 			SpawnPoints = GameObject.FindGameObjectsWithTag ("SpawnPoint");
 		}
 
@@ -91,6 +154,25 @@ namespace MostDanger {
 
 	        Characters.Add(tmp);
 	    }
+
+		static public void AddBot()
+		{
+			CharacterManager tmp = new CharacterManager();
+
+			//GameObject создаем здесь
+			//tmp.Instance = character;
+
+			//номер выдаем пока рандомный
+			//tmp.PlayerNumber = playerNum;
+
+			//цвет выдаем пока рандомный
+			//tmp.PlayerColor = c;
+
+			tmp.PlayerName = "Bot";
+			tmp.Setup();
+
+			Characters.Add(tmp);
+		}
 
 	    public void RemoveCharacter(GameObject character)
 	    {

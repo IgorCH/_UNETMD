@@ -16,7 +16,17 @@ namespace MostDanger
 
 	        if(lp != null)
 	            GameManager.AddCharacter(gamePlayer, lp.slot, lp.playerColor, lp.nameInput.text);
+			
 	    }
+
+		public override void OnLobbyServerSceneChanged(string sceneName) 
+		{
+			Debug.Log (sceneName);
+			GameManager.AddBot();
+
+		}
+
+
 	}
 
 }

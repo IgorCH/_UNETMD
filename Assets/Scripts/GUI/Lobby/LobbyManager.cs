@@ -32,6 +32,9 @@ namespace MostDanger
 
         protected RectTransform currentPanel;
 
+		public GameObject gnomePlayerPrefab;
+		public GameObject goblinPlayerPrefab;
+
         public Button backButton;
 
         //used to disconnect a client properly when exiting the matchmaker
@@ -274,6 +277,13 @@ namespace MostDanger
             return obj;
         }
 
+		public override GameObject OnLobbyServerCreateGamePlayer(NetworkConnection conn, short playerControllerId)
+		{
+			GameObject obj = Instantiate(gnomePlayerPrefab.gameObject) as GameObject;
+
+			return obj;
+		}
+
         public override void OnLobbyServerDisconnect(NetworkConnection conn)
         {
             for (int i = 0; i < numPlayers; ++i)
@@ -292,13 +302,11 @@ namespace MostDanger
         {
             //This hook allows you to apply state data from the lobby-player to the game-player
             //just subclass "LobbyHook" and add it to the lobby object.
-
             if (_lobbyHooks)
                 _lobbyHooks.OnLobbyServerSceneLoadedForPlayer(this, lobbyPlayer, gamePlayer);
 
             return true;
         }
-
 
         // --- Countdown management
 
@@ -345,7 +353,7 @@ namespace MostDanger
                 }
             }
 
-            ServerChangeScene(playScene);
+            this.ServerChangeScene(playScene);
         }
 
         // ----------------- Client callbacks ------------------
