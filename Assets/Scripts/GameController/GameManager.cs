@@ -23,32 +23,40 @@
  * Options
  * Quit
  * 
- * Динамическая загрузка карты и контроллера
+ * Управление
+ *  WASD - Moving
+ * 	Space - Инвентарь
+ *  T - Use Technics
+ *  R - Attack
  * 
- * Добавление ботов в лобби
  * 
- * Кампании играешь одной командой.
- * Все остальное другой
+ * 
+ * 
+ * 
+ * Динамическая загрузка карты
  *  
  * Загрузка выбранной карты на старте
  * Сформировать список SpawnPoint и другие параметры карты
  * 	
  * Создание различных PlayerPrefab для выбранного игрока
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * Добавление ботов в лобби 
  *   
  * Нужно ввести понятие команды
  * Нужно уметь получить победителя
  *  
  * При создании игры выбираем карту
  * Выбираем команды
- *  
+ *
  * Надо уметь слушать конец хода (по времени или по атаке)
  * Надо уметь слушать смерти и подводить итоги
  *  
  * Надо уметь создавать игровые события
- *  
- * Логика
- * CharacterLobbyHook.OnLobbyServer SceneLoadedForPlayer
- * событие после загрузки карты у игрока. В этот момент создается персонаж GameManager.AddTank
  *
  * План
  * 1. наладить инвентарь, сделать четким
@@ -89,7 +97,9 @@ namespace MostDanger {
 		public GameObject CartoonLevel;
 		public GameObject FootholdLevel;
 
-	    private GameObject[] SpawnPoints;
+		private GameObject LevelObject;
+
+		private Transform[] SpawnPoints;
 
 	    [HideInInspector]
 	    [SyncVar]
@@ -118,23 +128,26 @@ namespace MostDanger {
 	        _startWait = new WaitForSeconds(StartDelay);
 	        _endWait = new WaitForSeconds(EndDelay);
 
-			//TODO ALARM
-			var level = Instantiate (FootholdLevel);
-			NetworkServer.Spawn (level);
-			//SpawnPoints = 
-	
-			RpcPrepareClients ();
+			CmdCreateLevel ();
+			//RpcPrepareClients ();
 
-	        // Once the tanks have been created and the camera is using them as targets, start the game.
 	        StartCoroutine(GameLoop());
 	    }
 
-		[ClientRpc]
-		public void RpcPrepareClients() 
-		{
-			//Debug.Log(GameObject.FindGameObjectsWithTag("SpawnPoint"));
-			SpawnPoints = GameObject.FindGameObjectsWithTag ("SpawnPoint");
+
+		[Command]
+		public void CmdCreateLevel () {
+			LevelObject = Instantiate (CartoonLevel);
+			SpawnPoints = LevelObject.GetComponent<LevelConfig> ().SpawnPoints;
+			NetworkServer.Spawn (LevelObject);
 		}
+
+		//[ClientRpc]
+		//public void RpcPrepareClients() 
+		//{
+			//Debug.Log(GameObject.FindGameObjectsWithTag("SpawnPoint"));
+			//SpawnPoints = GameObject.FindGameObjectsWithTag ("SpawnPoint");
+		//}
 
 	    /// <summary>
 	    /// Add a character from the lobby hook
@@ -451,8 +464,9 @@ namespace MostDanger {
 	    {
 	        for (int i = 0; i < Characters.Count; i++)
 	        {
-				Characters[i].spawnPoint = SpawnPoints[Characters[i].characterSetup.PlayerNumber].GetComponent<Transform>();
-	            Characters[i].Reset();
+				//Debug.Log ("||| - " + Characters[i] + " - " + SpawnPoints[Characters[i].characterSetup.PlayerNumber]);
+				//Characters[i].spawnPoint = SpawnPoints[Characters[i].characterSetup.PlayerNumber];
+	            //Characters[i].Reset();
 	        }
 	    }
 

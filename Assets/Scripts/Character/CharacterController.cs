@@ -221,17 +221,17 @@ namespace MostDanger {
 	    }
 
 	    //We freeze the rigibody when the control is disabled to avoid the tank drifting!
-	    protected RigidbodyConstraints _originalConstrains;
-	    void OnDisable()
-	    {
+	    //protected RigidbodyConstraints _originalConstrains;
+	    //void OnDisable()
+	    //{
 	        //_originalConstrains = Rigidbody.constraints;
 	        //Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-	    }
+	    //}
 
-	    void OnEnable()
-	    {
+	    //void OnEnable()
+	    //{
 	        //Rigidbody.constraints = _originalConstrains;
-	    }
+	    //}
 	}
 
 }

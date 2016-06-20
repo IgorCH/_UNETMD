@@ -6,7 +6,6 @@ using UnityEngine.Networking.Types;
 using UnityEngine.Networking.Match;
 using System.Collections;
 
-
 namespace MostDanger
 {
     public class LobbyManager : NetworkLobbyManager 
@@ -367,9 +366,15 @@ namespace MostDanger
         public override void OnClientError(NetworkConnection conn, int errorCode)
         {
 			ChangeTo(multiplayerPanel);
-            infoPanel.Display("Cient error : " + (errorCode == 6 ? "timeout" : errorCode.ToString()), "Close", null);
+            infoPanel.Display("Client error : " + (errorCode == 6 ? "timeout" : errorCode.ToString()), "Close", null);
         }
-
+			
+		public override void OnLobbyServerSceneChanged(string sceneName) 
+		{
+			//Debug.Log (sceneName);
+			//TODO IGS for lobbySlots if bot then Spawn
+			//GameManager.AddBot();
+		}
 
     }
 }
